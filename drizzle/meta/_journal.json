@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1691629100567,
+      "tag": "0000_groovy_swordsman",
+      "breakpoints": true
+    }
+  ]
+}
