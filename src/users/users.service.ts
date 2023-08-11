@@ -1,18 +1,15 @@
-import Database from 'better-sqlite3';
-import { drizzle, BetterSQLite3Database } from 'drizzle-orm/better-sqlite3';
 import { InferModel } from 'drizzle-orm';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { users } from 'src/schema';
-
-const sqlite = new Database('./sqlite.db');
-const db: BetterSQLite3Database = drizzle(sqlite, { logger: true });
+import { DB, DbType } from 'src/global/providers/database.provider';
 
 @Injectable()
 export class UsersService {
+  constructor(@Inject(DB) private readonly database: DbType) {}
   create(createUserDto: CreateUserDto) {
-    const query = db
+    const query = this.database
       .insert(users)
       .values({ name: 'wasd', email: 'wasdwasdwasd' } as InferModel<
         typeof users,
@@ -26,7 +23,7 @@ export class UsersService {
   }
 
   findAll() {
-    return db.select().from(users).all();
+    return this.database.select().from(users).all();
   }
 
   findOne(id: number) {
