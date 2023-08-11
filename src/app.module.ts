@@ -5,10 +5,7 @@ import { UsersModule } from './users/users.module';
 import { GlobalModule } from './global/global.module';
 
 @Module({
-  imports: [
-    GlobalModule,
-    UsersModule,
-  ],
+  imports: [GlobalModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })

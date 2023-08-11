@@ -7,21 +7,23 @@ export const DB = Symbol('DB_SERVICE');
 export type DbType = BetterSQLite3Database<Record<string, never>>;
 
 export const DatabaseProvider: FactoryProvider = {
-    provide: DB,
-    inject: [],
-    useFactory: () => {
-        const logger = new Logger('DB');
+  provide: DB,
+  inject: [],
+  useFactory: () => {
+    const logger = new Logger('DB');
 
-        const connection = new Database('./sqlite.db');
+    const connection = new Database('./sqlite.db');
 
-        logger.debug('Connected to database!');
+    logger.debug('Connected to database!');
 
-        class CustomDbLogWriter implements LogWriter {
-            write(message: string) { logger.verbose(message) }
-        }
+    class CustomDbLogWriter implements LogWriter {
+      write(message: string) {
+        logger.verbose(message);
+      }
+    }
 
-        return drizzle(connection, {
-            logger: new DefaultLogger({ writer: new CustomDbLogWriter() }),
-        });
-    },
+    return drizzle(connection, {
+      logger: new DefaultLogger({ writer: new CustomDbLogWriter() }),
+    });
+  },
 };
