@@ -3,7 +3,9 @@ import { TransactionsWorkerService } from './transactions-worker.service';
 
 @Controller()
 export class TransactionsWorkerController {
-  constructor(private readonly transactionsWorkerService: TransactionsWorkerService) {}
+  constructor(
+    private readonly transactionsWorkerService: TransactionsWorkerService,
+  ) {}
 
   @Get()
   getHello(): string {

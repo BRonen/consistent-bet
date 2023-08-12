@@ -33,3 +33,4 @@ export const transactionsRelations = relations(
 );
 
 export type UserType = InferModel<typeof usersSchema>;
+export type TransactionType = InferModel<typeof transactionsSchema>;
