@@ -13,8 +13,9 @@ export class TasksService {
   handleCron() {
     this.logger.debug('Called every 10 seconds');
 
+    // TODO: fix race condition
     this.repos.user.findAll().forEach(user => {
-      console.log(this.repos.user.updateById(user.id, { balance: user.balance + 1 }));
+      this.repos.user.updateById(user.id, { balance: user.balance + 1 });
     });
   }
 }
