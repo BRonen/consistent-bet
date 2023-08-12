@@ -10,7 +10,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     const hash = await bcrypt.hash(createUserDto.password, 2);
-    
+
     const [id, name, email] = this.repos.user.create({
       ...createUserDto,
       password: hash,
@@ -29,7 +29,7 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: number, _updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 

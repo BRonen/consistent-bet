@@ -45,23 +45,23 @@ export class UserRepository {
     return users;
   }
 
-  updateById(id: UserType["id"], updateUserDto: Partial<UserType>) {
+  updateById(id: UserType['id'], updateUserDto: Partial<UserType>) {
     const users = this.database
       .update(usersSchema)
       .set(updateUserDto)
-      .where(eq(usersSchema.id, id)).run();
+      .where(eq(usersSchema.id, id))
+      .run();
 
     return users;
   }
 
   incrementAllBalances(value: number, where?: SQL) {
     const query = this.database.update(usersSchema).set({
-      balance: sql`(select balance + ${value} FROM ${usersSchema} as t1 where users.id = t1.id);`
+      balance: sql`(select balance + ${value} FROM ${usersSchema} as t1 where users.id = t1.id);`,
     });
 
-    if(where)
-      return query.where(where).run();
-    
+    if (where) return query.where(where).run();
+
     query.run();
   }
 }

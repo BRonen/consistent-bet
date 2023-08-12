@@ -7,12 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TasksModule } from './tasks/tasks.module';
 
 @Module({
-  imports: [
-    GlobalModule,
-    UsersModule,
-    AuthModule, 
-    TasksModule,
-  ],
+  imports: [GlobalModule, UsersModule, AuthModule, TasksModule],
   controllers: [AppController],
   providers: [AppService],
 })

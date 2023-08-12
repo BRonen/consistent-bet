@@ -8,8 +8,8 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 export class AuthService {
   constructor(
     private repos: RepositoryService,
-    private jwtService: JwtService
-  ) { }
+    private jwtService: JwtService,
+  ) {}
 
   async signIn({ email, password }: CreateAuthDto) {
     const { id, name, hash } = this.repos.user.getUserHashByEmail(email);
