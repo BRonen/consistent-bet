@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RepositoryService } from 'src/global/repositories/repository.service';
+import { RepositoryService } from '../global/repositories/repository.service';
 
 @Injectable()
 export class TasksService {
@@ -13,5 +13,14 @@ export class TasksService {
     this.logger.debug('Called every 10 seconds');
 
     this.repos.user.incrementAllBalances(10000);
+  }
+  
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  handleCron2() {
+    this.logger.debug('Called every 10² seconds start');
+
+    //while(true) continue;
+    
+    this.logger.debug('Called every 10² seconds end');
   }
 }
