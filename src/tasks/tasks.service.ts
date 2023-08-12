@@ -1,4 +1,3 @@
-
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { RepositoryService } from 'src/global/repositories/repository.service';
@@ -13,9 +12,6 @@ export class TasksService {
   handleCron() {
     this.logger.debug('Called every 10 seconds');
 
-    // TODO: fix race condition
-    this.repos.user.findAll().forEach(user => {
-      this.repos.user.updateById(user.id, { balance: user.balance + 1 });
-    });
+    this.repos.user.incrementAllBalances(10000);
   }
 }

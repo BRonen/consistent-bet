@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { InferModel, eq } from 'drizzle-orm';
+import { InferModel, SQL, eq, sql } from 'drizzle-orm';
 import { UserType, usersSchema } from 'src/schema';
 import { DB, DbType } from '../database.provider';
 
@@ -52,5 +52,16 @@ export class UserRepository {
       .where(eq(usersSchema.id, id)).run();
 
     return users;
+  }
+
+  incrementAllBalances(value: number, where?: SQL) {
+    const query = this.database.update(usersSchema).set({
+      balance: sql`(select balance + ${value} FROM ${usersSchema} as t1 where users.id = t1.id);`
+    });
+
+    if(where)
+      return query.where(where).run();
+    
+    query.run();
   }
 }
