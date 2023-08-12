@@ -1,29 +1,21 @@
 import { InferModel } from 'drizzle-orm';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { users } from 'src/schema';
-import { DB, DbType } from 'src/global/providers/database.provider';
+import { RepositoryService } from 'src/global/repositories/repository.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject(DB) private readonly database: DbType) {}
+  constructor(private repos: RepositoryService) {}
+  
   create(createUserDto: CreateUserDto) {
-    const query = this.database
-      .insert(users)
-      .values({ name: 'wasd', email: 'wasdwasdwasd' } as InferModel<
-        typeof users,
-        'insert'
-      >)
-      .returning();
-
-    const [user] = query.values();
-
-    return user;
+    const [id, name, email] = this.repos.user.create(createUserDto);
+    return { id, name, email };
   }
 
   findAll() {
-    return this.database.select().from(users).all();
+    const users = this.repos.user.findAll();
+    return users;
   }
 
   findOne(id: number) {
