@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, eq } from 'drizzle-orm';
-import { usersSchema } from 'src/schema';
+import { UserType, usersSchema } from 'src/schema';
 import { DB, DbType } from '../database.provider';
 
 export class UserRepository {
@@ -37,9 +37,19 @@ export class UserRepository {
         id: usersSchema.id,
         name: usersSchema.name,
         email: usersSchema.email,
+        balance: usersSchema.balance,
       })
       .from(usersSchema)
       .all();
+
+    return users;
+  }
+
+  updateById(id: UserType["id"], updateUserDto: Partial<UserType>) {
+    const users = this.database
+      .update(usersSchema)
+      .set(updateUserDto)
+      .where(eq(usersSchema.id, id)).run();
 
     return users;
   }
