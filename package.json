@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/consistent-bets/test/jest-e2e.json",
     "migrate": "ts-node scripts/migrate.ts",
-    "migrate:generate": "drizzle-kit generate:sqlite --schema=./apps/consistent-bets/src/schema.ts"
+    "migrate:generate": "drizzle-kit generate:sqlite --schema=./libs/database/src/schema.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -78,7 +78,11 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@consistent-bets/database(|/.*)$": "<rootDir>/libs/database/src/$1"
+    }
   }
 }

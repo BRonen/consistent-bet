@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, SQL, eq, sql } from 'drizzle-orm';
-import { UserType, usersSchema } from '../../schema'
+import { UserType, usersSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class UserRepository {

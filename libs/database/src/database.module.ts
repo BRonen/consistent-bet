@@ -7,4 +7,4 @@ import { RepositoryService } from './repositories/repository.service';
   providers: [DatabaseProvider, RepositoryService],
   exports: [DB, RepositoryService],
 })
-export class GlobalModule {}
+export class DatabaseModule {}

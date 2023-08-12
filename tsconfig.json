@@ -18,6 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    "paths": {}
+    "paths": {
+      "@consistent-bets/database": [
+        "libs/database/src"
+      ],
+      "@consistent-bets/database/*": [
+        "libs/database/src/*"
+      ]
+    }
   }
 }

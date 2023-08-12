@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RepositoryService } from '../global/repositories/repository.service';
+import { RepositoryService } from '@consistent-bets/database/repositories/repository.service';
 
 @Injectable()
 export class TasksService {

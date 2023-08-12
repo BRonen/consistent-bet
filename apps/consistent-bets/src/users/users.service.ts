@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { RepositoryService } from '../global/repositories/repository.service';
+import { RepositoryService } from '@consistent-bets/database/repositories/repository.service';
 import bcrypt from 'bcrypt';
 
 @Injectable()
