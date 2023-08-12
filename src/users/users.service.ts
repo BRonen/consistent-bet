@@ -1,20 +1,27 @@
-import { InferModel } from 'drizzle-orm';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RepositoryService } from 'src/global/repositories/repository.service';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(private repos: RepositoryService) {}
-  
-  create(createUserDto: CreateUserDto) {
-    const [id, name, email] = this.repos.user.create(createUserDto);
+
+  async create(createUserDto: CreateUserDto) {
+    const hash = await bcrypt.hash(createUserDto.password, 2);
+    
+    const [id, name, email] = this.repos.user.create({
+      ...createUserDto,
+      password: hash,
+    });
+
     return { id, name, email };
   }
 
   findAll() {
     const users = this.repos.user.findAll();
+
     return users;
   }
 
