@@ -11,20 +11,25 @@ export const usersSchema = sqliteTable('users', {
 
 export const transactionsSchema = sqliteTable('transactions', {
   id: integer('id').primaryKey({ autoIncrement: true }),
-  password: text('status').notNull().default('processing'),
+  status: text('status').notNull().default('processing'),
   amount: integer('amount').notNull(),
-  userId: integer('user_id').notNull()
-  .references(() => usersSchema.id),
+  receiverId: integer('receiver_id')
+    .notNull()
+    .references(() => usersSchema.id),
+  senderId: integer('sender_id')
+    .notNull()
+    .references(() => usersSchema.id),
 });
 
-
-export const transactionsRelations = relations(transactionsSchema, ({ one, many }) => ({
-	user: one(usersSchema, {
-		fields: [transactionsSchema.userId],
-		references: [usersSchema.id],
-	}),
-	transactions: many(transactionsSchema)
-}));
- 
+export const transactionsRelations = relations(
+  transactionsSchema,
+  ({ one, many }) => ({
+    user: one(usersSchema, {
+      fields: [transactionsSchema.receiverId, transactionsSchema.senderId],
+      references: [usersSchema.id, usersSchema.id],
+    }),
+    transactions: many(transactionsSchema),
+  }),
+);
 
 export type UserType = InferModel<typeof usersSchema>;
