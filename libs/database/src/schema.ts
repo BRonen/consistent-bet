@@ -21,6 +21,12 @@ export const transactionsSchema = pgTable('transactions', {
     .references(() => usersSchema.id),
 });
 
+export const betableSchema = pgTable('betable', {
+  id: serial('id').primaryKey(),
+  name: varchar('name'),
+  price: integer('price'),
+})
+
 export const transactionsRelations = relations(
   transactionsSchema,
   ({ one, many }) => ({
@@ -34,3 +40,4 @@ export const transactionsRelations = relations(
 
 export type UserType = InferModel<typeof usersSchema>;
 export type TransactionType = InferModel<typeof transactionsSchema>;
+export type BetableType = InferModel<typeof transactionsSchema>;
