@@ -32,26 +32,30 @@ export class TransactionRepository {
   }
 
   async processById() {
-    await this.database.transaction(async tx => {
-      await tx.execute(sql`LOCK TABLE transactions IN ROW EXCLUSIVE MODE;`)
-      const [transaction] = await tx.select()
+    await this.database.transaction(async (tx) => {
+      await tx.execute(sql`LOCK TABLE transactions IN ROW EXCLUSIVE MODE;`);
+      const [transaction] = await tx
+        .select()
         .from(transactionsSchema)
         .limit(1)
-        .where(sql`${transactionsSchema.status} = 'processing' FOR UPDATE`)
-      
-      if(!transaction) return;
+        .where(sql`${transactionsSchema.status} = 'processing' FOR UPDATE`);
 
-      await tx.update(usersSchema)
+      if (!transaction) return;
+
+      await tx
+        .update(usersSchema)
         .set({ balance: sql`${usersSchema.balance} - ${transaction.amount}` })
         .where(eq(usersSchema.id, transaction.senderId));
 
-      await tx.update(usersSchema)
+      await tx
+        .update(usersSchema)
         .set({ balance: sql`${usersSchema.balance} + ${transaction.amount}` })
         .where(eq(usersSchema.id, transaction.receiverId));
 
-      await tx.update(transactionsSchema)
+      await tx
+        .update(transactionsSchema)
         .set({ status: 'processed' })
         .where(eq(transactionsSchema.id, transaction.id));
-    })
+    });
   }
 }

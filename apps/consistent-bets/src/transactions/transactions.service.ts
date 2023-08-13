@@ -7,7 +7,7 @@ export class TransactionsService {
   constructor(private repos: RepositoryService) {}
 
   async create(createTransactionDto: CreateTransactionDto) {
-    const {id, status, amount, receiverId, senderId} =
+    const { id, status, amount, receiverId, senderId } =
       await this.repos.transaction.create(createTransactionDto);
     return { id, status, amount, receiverId, senderId };
   }

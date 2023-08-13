@@ -18,7 +18,7 @@ export class TasksService {
   @Cron(CronExpression.EVERY_10_SECONDS)
   handleTransactionsProcess() {
     this.logger.debug('Processing one transaction');
-    
+
     this.repos.transaction.processById();
   }
 }

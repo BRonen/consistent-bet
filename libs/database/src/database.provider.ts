@@ -11,13 +11,13 @@ export const DatabaseProvider: FactoryProvider = {
   inject: [],
   useFactory: () => {
     const logger = new Logger('DB');
-    
-    const connectionUri = process.env.DB_CONNECTION_URI
 
-    if(!connectionUri) throw new Error("Invalid database connection uri")
-    
+    const connectionUri = process.env.DB_CONNECTION_URI;
+
+    if (!connectionUri) throw new Error('Invalid database connection uri');
+
     const databaseClient = postgres(connectionUri, { max: 1 });
-    
+
     logger.debug('Connected to database!');
 
     class CustomDbLogWriter implements LogWriter {
