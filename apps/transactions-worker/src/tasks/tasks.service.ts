@@ -15,12 +15,10 @@ export class TasksService {
     this.repos.user.incrementAllBalances(10000);
   }
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
-  handleCron2() {
-    this.logger.debug('Called every 10² seconds start');
-
-    //while(true) continue;
-
-    this.logger.debug('Called every 10² seconds end');
+  @Cron(CronExpression.EVERY_10_SECONDS)
+  handleTransactionsProcess() {
+    this.logger.debug('Processing one transaction');
+    
+    this.repos.transaction.processById();
   }
 }

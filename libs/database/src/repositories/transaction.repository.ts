@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { InferModel } from 'drizzle-orm';
-import { transactionsSchema } from '../schema';
+import { InferModel, eq, sql } from 'drizzle-orm';
+import { transactionsSchema, usersSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class TransactionRepository {
@@ -29,5 +29,29 @@ export class TransactionRepository {
       .from(transactionsSchema);
 
     return users;
+  }
+
+  async processById() {
+    await this.database.transaction(async tx => {
+      await tx.execute(sql`LOCK TABLE transactions IN ROW EXCLUSIVE MODE;`)
+      const [transaction] = await tx.select()
+        .from(transactionsSchema)
+        .limit(1)
+        .where(sql`${transactionsSchema.status} = 'processing' FOR UPDATE`)
+      
+      if(!transaction) return;
+
+      await tx.update(usersSchema)
+        .set({ balance: sql`${usersSchema.balance} - ${transaction.amount}` })
+        .where(eq(usersSchema.id, transaction.senderId));
+
+      await tx.update(usersSchema)
+        .set({ balance: sql`${usersSchema.balance} + ${transaction.amount}` })
+        .where(eq(usersSchema.id, transaction.receiverId));
+
+      await tx.update(transactionsSchema)
+        .set({ status: 'processed' })
+        .where(eq(transactionsSchema.id, transaction.id));
+    })
   }
 }
