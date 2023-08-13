@@ -1,12 +1,12 @@
 {
   "version": "5",
-  "dialect": "sqlite",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1691870853932,
-      "tag": "0000_huge_ultimates",
+      "when": 1691888837136,
+      "tag": "0000_flawless_angel",
       "breakpoints": true
     }
   ]

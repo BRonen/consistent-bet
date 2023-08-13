@@ -6,22 +6,21 @@ import { DB, DbType } from '../database.provider';
 export class UserRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
-  getUserHashByEmail(email) {
-    const [user] = this.database
+  async getUserHashByEmail(email) {
+    const [user] = await this.database
       .select({
         id: usersSchema.id,
         name: usersSchema.name,
         hash: usersSchema.password,
       })
       .from(usersSchema)
-      .where(eq(usersSchema.email, email))
-      .all();
+      .where(eq(usersSchema.email, email));
 
     return user;
   }
 
-  create(createUserDto: InferModel<typeof usersSchema, 'insert'>) {
-    const query = this.database
+  async create(createUserDto: InferModel<typeof usersSchema, 'insert'>) {
+    const query = await this.database
       .insert(usersSchema)
       .values(createUserDto)
       .returning();
@@ -31,7 +30,7 @@ export class UserRepository {
     return user;
   }
 
-  findAll() {
+  async findAll() {
     const users = this.database
       .select({
         id: usersSchema.id,
@@ -39,18 +38,16 @@ export class UserRepository {
         email: usersSchema.email,
         balance: usersSchema.balance,
       })
-      .from(usersSchema)
-      .all();
+      .from(usersSchema);
 
     return users;
   }
 
-  updateById(id: UserType['id'], updateUserDto: Partial<UserType>) {
-    const users = this.database
+  async updateById(id: UserType['id'], updateUserDto: Partial<UserType>) {
+    const users = await this.database
       .update(usersSchema)
       .set(updateUserDto)
-      .where(eq(usersSchema.id, id))
-      .run();
+      .where(eq(usersSchema.id, id));
 
     return users;
   }
@@ -60,8 +57,8 @@ export class UserRepository {
       balance: sql`(select balance + ${value} FROM ${usersSchema} as t1 where users.id = t1.id);`,
     });
 
-    if (where) return query.where(where).run();
+    if (where) return query.where(where).execute();
 
-    query.run();
+    return query.execute();
   }
 }

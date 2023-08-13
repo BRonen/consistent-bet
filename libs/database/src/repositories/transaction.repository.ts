@@ -6,21 +6,19 @@ import { DB, DbType } from '../database.provider';
 export class TransactionRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
-  create(
+  async create(
     createTransactionDto: InferModel<typeof transactionsSchema, 'insert'>,
   ) {
-    const query = this.database
+    const [user] = await this.database
       .insert(transactionsSchema)
       .values(createTransactionDto)
       .returning();
 
-    const [user] = query.values();
-
     return user;
   }
 
-  findAll() {
-    const users = this.database
+  async findAll() {
+    const users = await this.database
       .select({
         id: transactionsSchema.id,
         status: transactionsSchema.status,
@@ -28,8 +26,7 @@ export class TransactionRepository {
         receiverId: transactionsSchema.receiverId,
         senderId: transactionsSchema.senderId,
       })
-      .from(transactionsSchema)
-      .all();
+      .from(transactionsSchema);
 
     return users;
   }

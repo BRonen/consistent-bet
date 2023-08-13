@@ -12,7 +12,7 @@ export class AuthService {
   ) {}
 
   async signIn({ email, password }: CreateAuthDto) {
-    const { id, name, hash } = this.repos.user.getUserHashByEmail(email);
+    const { id, name, hash } = await this.repos.user.getUserHashByEmail(email);
 
     const isAuthenticated = await bcrypt.compare(password, hash);
 

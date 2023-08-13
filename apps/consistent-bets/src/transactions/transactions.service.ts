@@ -6,14 +6,14 @@ import { RepositoryService } from '@consistent-bets/database/repositories/reposi
 export class TransactionsService {
   constructor(private repos: RepositoryService) {}
 
-  create(createTransactionDto: CreateTransactionDto) {
-    const [id, status, amount, receiverId, senderId] =
-      this.repos.transaction.create(createTransactionDto);
+  async create(createTransactionDto: CreateTransactionDto) {
+    const {id, status, amount, receiverId, senderId} =
+      await this.repos.transaction.create(createTransactionDto);
     return { id, status, amount, receiverId, senderId };
   }
 
-  findAll() {
-    const transactions = this.repos.transaction.findAll();
+  async findAll() {
+    const transactions = await this.repos.transaction.findAll();
 
     return transactions;
   }

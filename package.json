@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/consistent-bets/test/jest-e2e.json",
     "migrate": "ts-node scripts/migrate.ts",
-    "migrate:generate": "drizzle-kit generate:sqlite --schema=./libs/database/src/schema.ts"
+    "migrate:generate": "drizzle-kit generate:pg --schema=./libs/database/src/schema.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -32,6 +32,7 @@
     "bcrypt": "^5.1.0",
     "better-sqlite3": "^8.5.0",
     "drizzle-orm": "^0.28.1",
+    "postgres": "^3.3.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "zod": "^3.21.4"
@@ -48,6 +49,7 @@
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "concurrently": "^8.2.0",
+    "dotenv": "^16.3.1",
     "drizzle-kit": "^0.19.12",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
