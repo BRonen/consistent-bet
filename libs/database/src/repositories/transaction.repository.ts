@@ -42,20 +42,20 @@ export class TransactionRepository {
 
       if (!transaction) return;
 
-      await tx
-        .update(usersSchema)
-        .set({ balance: sql`${usersSchema.balance} - ${transaction.amount}` })
-        .where(eq(usersSchema.id, transaction.senderId));
-
-      await tx
-        .update(usersSchema)
-        .set({ balance: sql`${usersSchema.balance} + ${transaction.amount}` })
-        .where(eq(usersSchema.id, transaction.receiverId));
-
-      await tx
-        .update(transactionsSchema)
-        .set({ status: 'processed' })
-        .where(eq(transactionsSchema.id, transaction.id));
+      await Promise.all([
+        tx
+          .update(usersSchema)
+          .set({ balance: sql`${usersSchema.balance} - ${transaction.amount}` })
+          .where(eq(usersSchema.id, transaction.senderId)),
+        tx
+          .update(usersSchema)
+          .set({ balance: sql`${usersSchema.balance} + ${transaction.amount}` })
+          .where(eq(usersSchema.id, transaction.receiverId)),
+        tx
+          .update(transactionsSchema)
+          .set({ status: 'processed' })
+          .where(eq(transactionsSchema.id, transaction.id)),
+      ]);
     });
   }
 }

@@ -4,6 +4,6 @@ import { BetableController } from './betables.controller';
 
 @Module({
   controllers: [BetableController],
-  providers: [BetableService]
+  providers: [BetableService],
 })
 export class BetableModule {}

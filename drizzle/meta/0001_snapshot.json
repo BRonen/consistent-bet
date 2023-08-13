@@ -1,9 +1,77 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "f825f1b3-0eac-4a6c-bff2-08ff4efac8d5",
-  "prevId": "30163b28-2bf3-46ef-850c-ac50c5387b31",
+  "id": "e9651563-7881-4aac-80ec-ed83661f2140",
+  "prevId": "289c5ac1-a5de-4869-a76f-10c437093a0d",
   "tables": {
+    "betable_purchase": {
+      "name": "betable_purchase",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'processing'"
+        },
+        "buy_or_sell": {
+          "name": "buy_or_sell",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "buyer_id": {
+          "name": "buyer_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "betable_id": {
+          "name": "betable_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "betable_purchase_buyer_id_users_id_fk": {
+          "name": "betable_purchase_buyer_id_users_id_fk",
+          "tableFrom": "betable_purchase",
+          "tableTo": "users",
+          "columnsFrom": [
+            "buyer_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "betable_purchase_betable_id_betable_purchase_id_fk": {
+          "name": "betable_purchase_betable_id_betable_purchase_id_fk",
+          "tableFrom": "betable_purchase",
+          "tableTo": "betable_purchase",
+          "columnsFrom": [
+            "betable_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "betable": {
       "name": "betable",
       "schema": "",
@@ -18,13 +86,13 @@
           "name": "name",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "price": {
           "name": "price",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         }
       },
       "indexes": {},

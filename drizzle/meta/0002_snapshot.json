@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "289c5ac1-a5de-4869-a76f-10c437093a0d",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "94da5578-9833-4024-a4d9-361af3637692",
+  "prevId": "e9651563-7881-4aac-80ec-ed83661f2140",
   "tables": {
     "betable_purchase": {
       "name": "betable_purchase",
@@ -12,6 +12,19 @@
           "name": "id",
           "type": "serial",
           "primaryKey": true,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'processing'"
+        },
+        "buy_or_sell": {
+          "name": "buy_or_sell",
+          "type": "boolean",
+          "primaryKey": false,
           "notNull": true
         },
         "buyer_id": {
@@ -42,10 +55,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "betable_purchase_betable_id_betable_purchase_id_fk": {
-          "name": "betable_purchase_betable_id_betable_purchase_id_fk",
+        "betable_purchase_betable_id_betable_id_fk": {
+          "name": "betable_purchase_betable_id_betable_id_fk",
           "tableFrom": "betable_purchase",
-          "tableTo": "betable_purchase",
+          "tableTo": "betable",
           "columnsFrom": [
             "betable_id"
           ],

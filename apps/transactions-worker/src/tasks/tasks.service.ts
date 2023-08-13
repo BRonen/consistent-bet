@@ -21,4 +21,11 @@ export class TasksService {
 
     this.repos.transaction.processById();
   }
+
+  @Cron(CronExpression.EVERY_30_SECONDS)
+  handlePurchaseProcess() {
+    this.logger.debug('Processing one purchase');
+
+    this.repos.betablePurchase.processPurchase();
+  }
 }

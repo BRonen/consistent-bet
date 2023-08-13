@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
-import { InferModel } from 'drizzle-orm';
-import { betableSchema } from '../schema';
+import { InferModel, eq, sql } from 'drizzle-orm';
+import { betableSchema, usersSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class BetableRepository {

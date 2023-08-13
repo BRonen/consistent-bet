@@ -8,7 +8,13 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { BetableModule } from './betables/betables.module';
 
 @Module({
-  imports: [DatabaseModule, UsersModule, AuthModule, TransactionsModule, BetableModule],
+  imports: [
+    DatabaseModule,
+    UsersModule,
+    AuthModule,
+    TransactionsModule,
+    BetableModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,5 +1,13 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { BetableService } from './betables.service';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('betables')
 export class BetableController {
@@ -12,5 +20,17 @@ export class BetableController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.betableService.findOne(+id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post(':id/buy')
+  buyOne(@Request() res, @Param('id') id: string) {
+    return this.betableService.buyOne(+id, res.user.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post(':id/sell')
+  sellOne(@Request() res, @Param('id') id: string) {
+    return this.betableService.sellOne(+id, res.user.id);
   }
 }
