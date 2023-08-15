@@ -6,9 +6,7 @@ import { DB, DbType } from '../database.provider';
 export class BetablePurchaseRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
-  async create(
-    createPurchaseDto: InferModel<typeof purchaseSchema, 'insert'>,
-  ) {
+  async create(createPurchaseDto: InferModel<typeof purchaseSchema, 'insert'>) {
     const [betable] = await this.database
       .insert(purchaseSchema)
       .values(createPurchaseDto)
@@ -41,18 +39,24 @@ export class BetablePurchaseRepository {
         .where(sql`${purchaseSchema.status} = 'processing' FOR UPDATE`)
         .limit(1);
 
-      if(!purchase) return;
+      if (!purchase) return;
 
       const [betable] = await tx
         .select()
         .from(purchasableSchema)
-        .where(sql`${purchasableSchema.id} = ${purchase.purchasableId} FOR UPDATE`)
+        .where(
+          sql`${purchasableSchema.id} = ${purchase.purchasableId} FOR UPDATE`,
+        )
         .limit(1);
 
       const [updatedBetable] = await Promise.all([
         tx
           .update(purchasableSchema)
-          .set({ price: Math.floor(purchase.isSell? betable.price * 0.9 : betable.price * 1.1) })
+          .set({
+            price: Math.floor(
+              purchase.isSell ? betable.price * 0.9 : betable.price * 1.1,
+            ),
+          })
           .where(eq(purchasableSchema.id, purchase.purchasableId))
           .returning(),
         tx
@@ -63,10 +67,9 @@ export class BetablePurchaseRepository {
         tx
           .update(userSchema)
           .set({
-            balance:
-            purchase.isSell
-                ? sql`${userSchema.balance} + ${Math.floor(betable.price * 0.9)}`
-                : sql`${userSchema.balance} - ${Math.floor(betable.price * 1)}`
+            balance: purchase.isSell
+              ? sql`${userSchema.balance} + ${Math.floor(betable.price * 0.9)}`
+              : sql`${userSchema.balance} - ${Math.floor(betable.price * 1)}`,
           })
           .where(eq(userSchema.id, purchase.buyerId)),
       ]);

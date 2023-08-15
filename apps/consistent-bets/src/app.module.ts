@@ -4,8 +4,8 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TransactionsModule } from './transactions/transactions.module';
-import { BetableModule } from './betables/betables.module';
+import { TransactionsModule } from './payments/payments.module';
+import { BetableModule } from './purchasables/purchasables.module';
 
 @Module({
   imports: [

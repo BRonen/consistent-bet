@@ -1,5 +1,11 @@
 import { InferModel, relations } from 'drizzle-orm';
-import { integer, pgTable, serial, varchar, boolean } from 'drizzle-orm/pg-core';
+import {
+  integer,
+  pgTable,
+  serial,
+  varchar,
+  boolean,
+} from 'drizzle-orm/pg-core';
 
 // Real Entities
 
@@ -30,11 +36,11 @@ export const paymentSchema = pgTable('payments', {
   status: varchar('status').notNull().default('processing'),
   amount: integer('amount').notNull(),
   receiverId: integer('receiver_id')
-  .notNull()
-  .references(() => userSchema.id),
+    .notNull()
+    .references(() => userSchema.id),
   senderId: integer('sender_id')
-  .notNull()
-  .references(() => userSchema.id),
+    .notNull()
+    .references(() => userSchema.id),
 });
 
 export type PaymentType = InferModel<typeof paymentSchema>;
@@ -44,39 +50,33 @@ export const purchaseSchema = pgTable('purchases', {
   status: varchar('status').notNull().default('processing'),
   isSell: boolean('buy_or_sell').notNull(),
   buyerId: integer('buyer_id')
-  .notNull()
-  .references(() => userSchema.id),
+    .notNull()
+    .references(() => userSchema.id),
   purchasableId: integer('betable_id')
-  .notNull()
-  .references(() => purchasableSchema.id),
+    .notNull()
+    .references(() => purchasableSchema.id),
 });
 
 export type PurchaseType = InferModel<typeof purchaseSchema>;
 
 // Relationships
 
-export const paymentsRelations = relations(
-  paymentSchema,
-  ({ one, many }) => ({
-    user: one(userSchema, {
-      fields: [paymentSchema.receiverId, paymentSchema.senderId],
-      references: [userSchema.id, userSchema.id],
-    }),
-    transactions: many(paymentSchema),
+export const paymentsRelations = relations(paymentSchema, ({ one, many }) => ({
+  user: one(userSchema, {
+    fields: [paymentSchema.receiverId, paymentSchema.senderId],
+    references: [userSchema.id, userSchema.id],
   }),
-);
+  transactions: many(paymentSchema),
+}));
 
-export const purchaseRelations = relations(
-  purchaseSchema,
-  ({ one, many }) => ({
-    user: one(userSchema, {
-      fields: [purchaseSchema.buyerId],
-      references: [userSchema.id],
-    }),
-    purchasable: one(purchasableSchema, {
-      fields: [purchaseSchema.purchasableId],
-      references: [purchasableSchema.id],
-    }),
-    betablePurchase: many(purchaseSchema),
+export const purchaseRelations = relations(purchaseSchema, ({ one, many }) => ({
+  user: one(userSchema, {
+    fields: [purchaseSchema.buyerId],
+    references: [userSchema.id],
   }),
-);
+  purchasable: one(purchasableSchema, {
+    fields: [purchaseSchema.purchasableId],
+    references: [purchasableSchema.id],
+  }),
+  betablePurchase: many(purchaseSchema),
+}));
