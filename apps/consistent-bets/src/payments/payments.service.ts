@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionDto } from './dto/create-transaction.dto';
+import { CreateTransactionDto } from './dto/create-payment.dto';
 import { RepositoryService } from '@consistent-bets/database/repositories/repository.service';
 
 @Injectable()

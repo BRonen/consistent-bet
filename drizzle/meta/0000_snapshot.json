@@ -1,11 +1,11 @@
 {
   "version": "5",
   "dialect": "pg",
-  "id": "289c5ac1-a5de-4869-a76f-10c437093a0d",
+  "id": "32a62ece-76cd-4934-b379-d5313e078b09",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
-    "betable_purchase": {
-      "name": "betable_purchase",
+    "payments": {
+      "name": "payments",
       "schema": "",
       "columns": {
         "id": {
@@ -14,14 +14,27 @@
           "primaryKey": true,
           "notNull": true
         },
-        "buyer_id": {
-          "name": "buyer_id",
+        "status": {
+          "name": "status",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'processing'"
+        },
+        "amount": {
+          "name": "amount",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "betable_id": {
-          "name": "betable_id",
+        "receiver_id": {
+          "name": "receiver_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sender_id": {
+          "name": "sender_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -29,12 +42,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "betable_purchase_buyer_id_users_id_fk": {
-          "name": "betable_purchase_buyer_id_users_id_fk",
-          "tableFrom": "betable_purchase",
+        "payments_receiver_id_users_id_fk": {
+          "name": "payments_receiver_id_users_id_fk",
+          "tableFrom": "payments",
           "tableTo": "users",
           "columnsFrom": [
-            "buyer_id"
+            "receiver_id"
           ],
           "columnsTo": [
             "id"
@@ -42,12 +55,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "betable_purchase_betable_id_betable_purchase_id_fk": {
-          "name": "betable_purchase_betable_id_betable_purchase_id_fk",
-          "tableFrom": "betable_purchase",
-          "tableTo": "betable_purchase",
+        "payments_sender_id_users_id_fk": {
+          "name": "payments_sender_id_users_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "users",
           "columnsFrom": [
-            "betable_id"
+            "sender_id"
           ],
           "columnsTo": [
             "id"
@@ -59,8 +72,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "betable": {
-      "name": "betable",
+    "purchasables": {
+      "name": "purchasables",
       "schema": "",
       "columns": {
         "id": {
@@ -87,8 +100,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "transactions": {
-      "name": "transactions",
+    "purchases": {
+      "name": "purchases",
       "schema": "",
       "columns": {
         "id": {
@@ -99,25 +112,25 @@
         },
         "status": {
           "name": "status",
-          "type": "varchar(256)",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true,
           "default": "'processing'"
         },
-        "amount": {
-          "name": "amount",
+        "buy_or_sell": {
+          "name": "buy_or_sell",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "buyer_id": {
+          "name": "buyer_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "receiver_id": {
-          "name": "receiver_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "sender_id": {
-          "name": "sender_id",
+        "betable_id": {
+          "name": "betable_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
@@ -125,12 +138,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "transactions_receiver_id_users_id_fk": {
-          "name": "transactions_receiver_id_users_id_fk",
-          "tableFrom": "transactions",
+        "purchases_buyer_id_users_id_fk": {
+          "name": "purchases_buyer_id_users_id_fk",
+          "tableFrom": "purchases",
           "tableTo": "users",
           "columnsFrom": [
-            "receiver_id"
+            "buyer_id"
           ],
           "columnsTo": [
             "id"
@@ -138,12 +151,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "transactions_sender_id_users_id_fk": {
-          "name": "transactions_sender_id_users_id_fk",
-          "tableFrom": "transactions",
-          "tableTo": "users",
+        "purchases_betable_id_purchasables_id_fk": {
+          "name": "purchases_betable_id_purchasables_id_fk",
+          "tableFrom": "purchases",
+          "tableTo": "purchasables",
           "columnsFrom": [
-            "sender_id"
+            "betable_id"
           ],
           "columnsTo": [
             "id"

@@ -6,7 +6,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { BetableService } from './betables.service';
+import { BetableService } from './purchasables.service';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('betables')

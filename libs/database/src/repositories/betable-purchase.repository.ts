@@ -1,16 +1,16 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, eq, sql } from 'drizzle-orm';
-import { betablePurchaseSchema, betableSchema, usersSchema } from '../schema';
+import { purchaseSchema, purchasableSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class BetablePurchaseRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
   async create(
-    createPurchaseDto: InferModel<typeof betablePurchaseSchema, 'insert'>,
+    createPurchaseDto: InferModel<typeof purchaseSchema, 'insert'>,
   ) {
     const [betable] = await this.database
-      .insert(betablePurchaseSchema)
+      .insert(purchaseSchema)
       .values(createPurchaseDto)
       .returning();
 
@@ -20,13 +20,13 @@ export class BetablePurchaseRepository {
   async findAll() {
     const purchases = await this.database
       .select({
-        id: betablePurchaseSchema.id,
-        status: betablePurchaseSchema.status,
-        isSell: betablePurchaseSchema.isSell,
-        buyerId: betablePurchaseSchema.buyerId,
-        betableId: betablePurchaseSchema.betableId,
+        id: purchaseSchema.id,
+        status: purchaseSchema.status,
+        isSell: purchaseSchema.isSell,
+        buyerId: purchaseSchema.buyerId,
+        purchasableId: purchaseSchema.purchasableId,
       })
-      .from(betablePurchaseSchema);
+      .from(purchaseSchema);
 
     return purchases;
   }
@@ -37,38 +37,38 @@ export class BetablePurchaseRepository {
 
       const [purchase] = await tx
         .select()
-        .from(betablePurchaseSchema)
-        .where(sql`${betablePurchaseSchema.status} = 'processing' FOR UPDATE`)
+        .from(purchaseSchema)
+        .where(sql`${purchaseSchema.status} = 'processing' FOR UPDATE`)
         .limit(1);
 
       if(!purchase) return;
 
       const [betable] = await tx
         .select()
-        .from(betableSchema)
-        .where(sql`${betableSchema.id} = ${purchase.betableId} FOR UPDATE`)
+        .from(purchasableSchema)
+        .where(sql`${purchasableSchema.id} = ${purchase.purchasableId} FOR UPDATE`)
         .limit(1);
 
       const [updatedBetable] = await Promise.all([
         tx
-          .update(betableSchema)
+          .update(purchasableSchema)
           .set({ price: Math.floor(purchase.isSell? betable.price * 0.9 : betable.price * 1.1) })
-          .where(eq(betableSchema.id, purchase.betableId))
+          .where(eq(purchasableSchema.id, purchase.purchasableId))
           .returning(),
         tx
-          .update(betablePurchaseSchema)
+          .update(purchaseSchema)
           .set({ status: 'processed' })
-          .where(eq(betablePurchaseSchema.id, purchase.id))
+          .where(eq(purchaseSchema.id, purchase.id))
           .returning(),
         tx
-          .update(usersSchema)
+          .update(userSchema)
           .set({
             balance:
             purchase.isSell
-                ? sql`${usersSchema.balance} + ${Math.floor(betable.price * 0.9)}`
-                : sql`${usersSchema.balance} - ${Math.floor(betable.price * 1)}`
+                ? sql`${userSchema.balance} + ${Math.floor(betable.price * 0.9)}`
+                : sql`${userSchema.balance} - ${Math.floor(betable.price * 1)}`
           })
-          .where(eq(usersSchema.id, purchase.buyerId)),
+          .where(eq(userSchema.id, purchase.buyerId)),
       ]);
 
       return updatedBetable;

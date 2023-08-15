@@ -1,16 +1,16 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, eq, sql } from 'drizzle-orm';
-import { betableSchema, usersSchema } from '../schema';
+import { purchasableSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class BetableRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
   async create(
-    createTransactionDto: InferModel<typeof betableSchema, 'insert'>,
+    createTransactionDto: InferModel<typeof purchasableSchema, 'insert'>,
   ) {
     const [betable] = await this.database
-      .insert(betableSchema)
+      .insert(purchasableSchema)
       .values(createTransactionDto)
       .returning();
 
@@ -20,11 +20,11 @@ export class BetableRepository {
   async findAll() {
     const betables = await this.database
       .select({
-        id: betableSchema.id,
-        name: betableSchema.name,
-        price: betableSchema.price,
+        id: purchasableSchema.id,
+        name: purchasableSchema.name,
+        price: purchasableSchema.price,
       })
-      .from(betableSchema);
+      .from(purchasableSchema);
 
     return betables;
   }

@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, SQL, eq, sql } from 'drizzle-orm';
-import { UserType, usersSchema } from '../schema';
+import { UserType, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class UserRepository {
@@ -9,19 +9,19 @@ export class UserRepository {
   async getUserHashByEmail(email) {
     const [user] = await this.database
       .select({
-        id: usersSchema.id,
-        name: usersSchema.name,
-        hash: usersSchema.password,
+        id: userSchema.id,
+        name: userSchema.name,
+        hash: userSchema.password,
       })
-      .from(usersSchema)
-      .where(eq(usersSchema.email, email));
+      .from(userSchema)
+      .where(eq(userSchema.email, email));
 
     return user;
   }
 
-  async create(createUserDto: InferModel<typeof usersSchema, 'insert'>) {
+  async create(createUserDto: InferModel<typeof userSchema, 'insert'>) {
     const query = await this.database
-      .insert(usersSchema)
+      .insert(userSchema)
       .values(createUserDto)
       .returning();
 
@@ -33,28 +33,28 @@ export class UserRepository {
   async findAll() {
     const users = this.database
       .select({
-        id: usersSchema.id,
-        name: usersSchema.name,
-        email: usersSchema.email,
-        balance: usersSchema.balance,
+        id: userSchema.id,
+        name: userSchema.name,
+        email: userSchema.email,
+        balance: userSchema.balance,
       })
-      .from(usersSchema);
+      .from(userSchema);
 
     return users;
   }
 
   async updateById(id: UserType['id'], updateUserDto: Partial<UserType>) {
     const users = await this.database
-      .update(usersSchema)
+      .update(userSchema)
       .set(updateUserDto)
-      .where(eq(usersSchema.id, id));
+      .where(eq(userSchema.id, id));
 
     return users;
   }
 
   incrementAllBalances(value: number, where?: SQL) {
-    const query = this.database.update(usersSchema).set({
-      balance: sql`(select balance + ${value} FROM ${usersSchema} as t1 where users.id = t1.id);`,
+    const query = this.database.update(userSchema).set({
+      balance: sql`(select balance + ${value} FROM ${userSchema} as t1 where users.id = t1.id);`,
     });
 
     if (where) return query.where(where).execute();

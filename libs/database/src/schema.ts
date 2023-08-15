@@ -1,7 +1,9 @@
 import { InferModel, relations } from 'drizzle-orm';
 import { integer, pgTable, serial, varchar, boolean } from 'drizzle-orm/pg-core';
 
-export const usersSchema = pgTable('users', {
+// Real Entities
+
+export const userSchema = pgTable('users', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 256 }).notNull(),
   email: varchar('email', { length: 256 }).notNull().unique(),
@@ -9,64 +11,72 @@ export const usersSchema = pgTable('users', {
   balance: integer('balance').notNull().default(10),
 });
 
-export const transactionsSchema = pgTable('transactions', {
-  id: serial('id').primaryKey(),
-  status: varchar('status', { length: 256 }).notNull().default('processing'),
-  amount: integer('amount').notNull(),
-  receiverId: integer('receiver_id')
-    .notNull()
-    .references(() => usersSchema.id),
-  senderId: integer('sender_id')
-    .notNull()
-    .references(() => usersSchema.id),
-});
+export type UserType = InferModel<typeof userSchema>;
 
-export const betableSchema = pgTable('betable', {
+export const purchasableSchema = pgTable('purchasables', {
   id: serial('id').primaryKey(),
   name: varchar('name').notNull(),
-  price: integer('price') // TODO: split buy price and sell price into two columns
-    .notNull(),
+  price: integer('price').notNull(),
 });
 
-export const betablePurchaseSchema = pgTable('betable_purchase', {
+export type PurchasableType = InferModel<typeof purchasableSchema>;
+
+// Event Entities
+
+//TODO: alter status column to a postgres enum
+
+export const paymentSchema = pgTable('payments', {
+  id: serial('id').primaryKey(),
+  status: varchar('status').notNull().default('processing'),
+  amount: integer('amount').notNull(),
+  receiverId: integer('receiver_id')
+  .notNull()
+  .references(() => userSchema.id),
+  senderId: integer('sender_id')
+  .notNull()
+  .references(() => userSchema.id),
+});
+
+export type PaymentType = InferModel<typeof paymentSchema>;
+
+export const purchaseSchema = pgTable('purchases', {
   id: serial('id').primaryKey(),
   status: varchar('status').notNull().default('processing'),
   isSell: boolean('buy_or_sell').notNull(),
   buyerId: integer('buyer_id')
-    .notNull()
-    .references(() => usersSchema.id),
-  betableId: integer('betable_id')
-    .notNull()
-    .references(() => betableSchema.id),
+  .notNull()
+  .references(() => userSchema.id),
+  purchasableId: integer('betable_id')
+  .notNull()
+  .references(() => purchasableSchema.id),
 });
 
-export const transactionsRelations = relations(
-  transactionsSchema,
+export type PurchaseType = InferModel<typeof purchaseSchema>;
+
+// Relationships
+
+export const paymentsRelations = relations(
+  paymentSchema,
   ({ one, many }) => ({
-    user: one(usersSchema, {
-      fields: [transactionsSchema.receiverId, transactionsSchema.senderId],
-      references: [usersSchema.id, usersSchema.id],
+    user: one(userSchema, {
+      fields: [paymentSchema.receiverId, paymentSchema.senderId],
+      references: [userSchema.id, userSchema.id],
     }),
-    transactions: many(transactionsSchema),
+    transactions: many(paymentSchema),
   }),
 );
 
-export const betablePurchaseRelations = relations(
-  betablePurchaseSchema,
+export const purchaseRelations = relations(
+  purchaseSchema,
   ({ one, many }) => ({
-    user: one(usersSchema, {
-      fields: [betablePurchaseSchema.buyerId],
-      references: [usersSchema.id],
+    user: one(userSchema, {
+      fields: [purchaseSchema.buyerId],
+      references: [userSchema.id],
     }),
-    betable: one(betableSchema, {
-      fields: [betablePurchaseSchema.betableId],
-      references: [betableSchema.id],
+    purchasable: one(purchasableSchema, {
+      fields: [purchaseSchema.purchasableId],
+      references: [purchasableSchema.id],
     }),
-    betablePurchase: many(betablePurchaseSchema),
+    betablePurchase: many(purchaseSchema),
   }),
 );
-
-export type UserType = InferModel<typeof usersSchema>;
-export type TransactionType = InferModel<typeof transactionsSchema>;
-export type BetableType = InferModel<typeof betableSchema>;
-export type BetablePurchaseType = InferModel<typeof betablePurchaseSchema>;

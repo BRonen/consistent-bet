@@ -18,7 +18,7 @@ export class BetableService {
   async buyOne(id: number, userId: number) {
     const purchase = await this.repos.betablePurchase.create({
       isSell: false,
-      betableId: id,
+      purchasableId: id,
       buyerId: userId,
     });
 
@@ -28,7 +28,7 @@ export class BetableService {
   async sellOne(id: number, userId: number) {
     const purchase = await this.repos.betablePurchase.create({
       isSell: true,
-      betableId: id,
+      purchasableId: id,
       buyerId: userId,
     });
 

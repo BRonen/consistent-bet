@@ -1,16 +1,16 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, eq, sql } from 'drizzle-orm';
-import { transactionsSchema, usersSchema } from '../schema';
+import { paymentSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class TransactionRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
   async create(
-    createTransactionDto: InferModel<typeof transactionsSchema, 'insert'>,
+    createTransactionDto: InferModel<typeof paymentSchema, 'insert'>,
   ) {
     const [user] = await this.database
-      .insert(transactionsSchema)
+      .insert(paymentSchema)
       .values(createTransactionDto)
       .returning();
 
@@ -20,13 +20,13 @@ export class TransactionRepository {
   async findAll() {
     const users = await this.database
       .select({
-        id: transactionsSchema.id,
-        status: transactionsSchema.status,
-        amount: transactionsSchema.amount,
-        receiverId: transactionsSchema.receiverId,
-        senderId: transactionsSchema.senderId,
+        id: paymentSchema.id,
+        status: paymentSchema.status,
+        amount: paymentSchema.amount,
+        receiverId: paymentSchema.receiverId,
+        senderId: paymentSchema.senderId,
       })
-      .from(transactionsSchema);
+      .from(paymentSchema);
 
     return users;
   }
@@ -36,25 +36,25 @@ export class TransactionRepository {
       await tx.execute(sql`LOCK TABLE transactions IN ROW EXCLUSIVE MODE;`);
       const [transaction] = await tx
         .select()
-        .from(transactionsSchema)
+        .from(paymentSchema)
         .limit(1)
-        .where(sql`${transactionsSchema.status} = 'processing' FOR UPDATE`);
+        .where(sql`${paymentSchema.status} = 'processing' FOR UPDATE`);
 
       if (!transaction) return;
 
       await Promise.all([
         tx
-          .update(usersSchema)
-          .set({ balance: sql`${usersSchema.balance} - ${transaction.amount}` })
-          .where(eq(usersSchema.id, transaction.senderId)),
+          .update(userSchema)
+          .set({ balance: sql`${userSchema.balance} - ${transaction.amount}` })
+          .where(eq(userSchema.id, transaction.senderId)),
         tx
-          .update(usersSchema)
-          .set({ balance: sql`${usersSchema.balance} + ${transaction.amount}` })
-          .where(eq(usersSchema.id, transaction.receiverId)),
+          .update(userSchema)
+          .set({ balance: sql`${userSchema.balance} + ${transaction.amount}` })
+          .where(eq(userSchema.id, transaction.receiverId)),
         tx
-          .update(transactionsSchema)
+          .update(paymentSchema)
           .set({ status: 'processed' })
-          .where(eq(transactionsSchema.id, transaction.id)),
+          .where(eq(paymentSchema.id, transaction.id)),
       ]);
     });
   }

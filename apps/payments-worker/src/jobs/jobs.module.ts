@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TasksService } from './tasks.service';
+import { TasksService } from './jobs.service';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({

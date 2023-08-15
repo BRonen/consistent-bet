@@ -19,13 +19,13 @@
         "tsConfigPath": "apps/consistent-bets/tsconfig.app.json"
       }
     },
-    "transactions-worker": {
+    "payments-worker": {
       "type": "application",
-      "root": "apps/transactions-worker",
+      "root": "apps/payments-worker",
       "entryFile": "main",
-      "sourceRoot": "apps/transactions-worker/src",
+      "sourceRoot": "apps/payments-worker/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/transactions-worker/tsconfig.app.json"
+        "tsConfigPath": "apps/payments-worker/tsconfig.app.json"
       }
     },
     "database": {

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TransactionsWorkerController } from './transactions-worker.controller';
-import { TransactionsWorkerService } from './transactions-worker.service';
+import { TransactionsWorkerController } from './payments-worker.controller';
+import { TransactionsWorkerService } from './payments-worker.service';
 
 describe('TransactionsWorkerController', () => {
   let transactionsWorkerController: TransactionsWorkerController;

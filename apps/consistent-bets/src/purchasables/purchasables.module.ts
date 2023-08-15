@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { BetableService } from './betables.service';
-import { BetableController } from './betables.controller';
+import { BetableService } from './purchasables.service';
+import { BetableController } from './purchasables.controller';
 
 @Module({
   controllers: [BetableController],

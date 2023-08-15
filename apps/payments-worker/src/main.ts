@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { TransactionsWorkerModule } from './transactions-worker.module';
+import { TransactionsWorkerModule } from './payments-worker.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(TransactionsWorkerModule);

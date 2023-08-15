@@ -5,6 +5,7 @@ import { DB, DbType } from '../database.provider';
 import { BetableRepository } from './betable.repository';
 import { BetablePurchaseRepository } from './betable-purchase.repository';
 
+//TODO: Split services persistence between diferents databases connections
 @Injectable()
 export class RepositoryService {
   public user: UserRepository;

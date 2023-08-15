@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '@consistent-bets/database/database.module';
-import { TransactionsWorkerController } from './transactions-worker.controller';
-import { TransactionsWorkerService } from './transactions-worker.service';
-import { TasksModule } from './tasks/tasks.module';
+import { TransactionsWorkerController } from './payments-worker.controller';
+import { TransactionsWorkerService } from './payments-worker.service';
+import { TasksModule } from './jobs/jobs.module';
 
 @Module({
   imports: [DatabaseModule, TasksModule],
