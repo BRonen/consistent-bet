@@ -3,8 +3,8 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { RepositoryService } from '@consistent-bets/database/repositories/repository.service';
 
 @Injectable()
-export class TasksService {
-  private readonly logger = new Logger(TasksService.name);
+export class JobsService {
+  private readonly logger = new Logger(JobsService.name);
 
   constructor(private repos: RepositoryService) {}
 
@@ -16,7 +16,7 @@ export class TasksService {
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)
-  handleTransactionsProcess() {
+  handlePaymentsProcess() {
     this.logger.debug('Processing one transaction');
 
     this.repos.transaction.processById();

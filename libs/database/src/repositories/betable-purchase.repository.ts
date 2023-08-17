@@ -31,7 +31,7 @@ export class BetablePurchaseRepository {
 
   async processPurchase() {
     return await this.database.transaction(async (tx) => {
-      await tx.execute(sql`LOCK TABLE transactions IN ROW EXCLUSIVE MODE;`);
+      await tx.execute(sql`LOCK TABLE Payments IN ROW EXCLUSIVE MODE;`);
 
       const [purchase] = await tx
         .select()

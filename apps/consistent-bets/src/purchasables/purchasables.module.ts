@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { BetableService } from './purchasables.service';
-import { BetableController } from './purchasables.controller';
+import { PurchasablesService } from './purchasables.service';
+import { PurchasablesController } from './purchasables.controller';
 
 @Module({
-  controllers: [BetableController],
-  providers: [BetableService],
+  controllers: [PurchasablesController],
+  providers: [PurchasablesService],
 })
-export class BetableModule {}
+export class PurchasablesModule {}

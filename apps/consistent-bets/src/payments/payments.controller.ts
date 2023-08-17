@@ -1,23 +1,23 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { TransactionsService } from './payments.service';
-import { CreateTransactionDto } from './dto/create-payment.dto';
+import { PaymentsService } from './payments.service';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 
-@Controller('transactions')
-export class TransactionsController {
-  constructor(private readonly transactionsService: TransactionsService) {}
+@Controller('Payments')
+export class PaymentsCrontroller {
+  constructor(private readonly PaymentsService: PaymentsService) {}
 
   @Post()
-  create(@Body() createTransactionDto: CreateTransactionDto) {
-    return this.transactionsService.create(createTransactionDto);
+  create(@Body() createPaymentsDto: CreatePaymentDto) {
+    return this.PaymentsService.create(createPaymentsDto);
   }
 
   @Get()
   findAll() {
-    return this.transactionsService.findAll();
+    return this.PaymentsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.transactionsService.findOne(+id);
+    return this.PaymentsService.findOne(+id);
   }
 }

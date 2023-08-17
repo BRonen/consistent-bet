@@ -3,7 +3,7 @@ import { CreateTransactionDto } from './dto/create-payment.dto';
 import { RepositoryService } from '@consistent-bets/database/repositories/repository.service';
 
 @Injectable()
-export class TransactionsService {
+export class PaymentsService {
   constructor(private repos: RepositoryService) {}
 
   async create(createTransactionDto: CreateTransactionDto) {
@@ -13,9 +13,9 @@ export class TransactionsService {
   }
 
   async findAll() {
-    const transactions = await this.repos.transaction.findAll();
+    const Payments = await this.repos.transaction.findAll();
 
-    return transactions;
+    return Payments;
   }
 
   findOne(id: number) {

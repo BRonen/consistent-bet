@@ -66,7 +66,7 @@ export const paymentsRelations = relations(paymentSchema, ({ one, many }) => ({
     fields: [paymentSchema.receiverId, paymentSchema.senderId],
     references: [userSchema.id, userSchema.id],
   }),
-  transactions: many(paymentSchema),
+  Payments: many(paymentSchema),
 }));
 
 export const purchaseRelations = relations(purchaseSchema, ({ one, many }) => ({

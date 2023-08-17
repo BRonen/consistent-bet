@@ -2,7 +2,7 @@ import { RepositoryService } from '@consistent-bets/database/repositories/reposi
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class BetableService {
+export class PurchasablesService {
   constructor(private repos: RepositoryService) {}
 
   async findAll() {

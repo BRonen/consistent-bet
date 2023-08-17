@@ -1,24 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TransactionsWorkerController } from './payments-worker.controller';
-import { TransactionsWorkerService } from './payments-worker.service';
+import { PaymentsWorkerController } from './payments-worker.controller';
+import { PaymentsWorkerService } from './payments-worker.service';
 
-describe('TransactionsWorkerController', () => {
-  let transactionsWorkerController: TransactionsWorkerController;
+describe('PaymentsWorkerController', () => {
+  let PaymentsWorkerController: PaymentsWorkerController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [TransactionsWorkerController],
-      providers: [TransactionsWorkerService],
+      controllers: [PaymentsWorkerController],
+      providers: [PaymentsWorkerService],
     }).compile();
 
-    transactionsWorkerController = app.get<TransactionsWorkerController>(
-      TransactionsWorkerController,
+    PaymentsWorkerController = app.get<PaymentsWorkerController>(
+      PaymentsWorkerController,
     );
   });
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(transactionsWorkerController.getHello()).toBe('Hello World!');
+      expect(PaymentsWorkerController.getHello()).toBe('Hello World!');
     });
   });
 });

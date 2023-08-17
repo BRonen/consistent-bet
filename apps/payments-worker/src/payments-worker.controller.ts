@@ -1,14 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
-import { TransactionsWorkerService } from './payments-worker.service';
+import { PaymentsWorkerService } from './payments-worker.service';
 
 @Controller()
-export class TransactionsWorkerController {
+export class PaymentsWorkerController {
   constructor(
-    private readonly transactionsWorkerService: TransactionsWorkerService,
+    private readonly PaymentsWorkerService: PaymentsWorkerService,
   ) {}
 
   @Get()
   getHello(): string {
-    return this.transactionsWorkerService.getHello();
+    return this.PaymentsWorkerService.getHello();
   }
 }
