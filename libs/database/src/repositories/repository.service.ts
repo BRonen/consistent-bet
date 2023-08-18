@@ -1,22 +1,22 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from './user.repository';
-import { TransactionRepository } from './transaction.repository';
 import { DB, DbType } from '../database.provider';
-import { BetableRepository } from './betable.repository';
-import { BetablePurchaseRepository } from './betable-purchase.repository';
+import { UserRepository } from './user.repository';
+import { PaymentRepository } from './payment.repository';
+import { PurchasableRepository } from './purchasable.repository';
+import { PurchaseRepository } from './purchase.repository';
 
 //TODO: Split services persistence between diferents databases connections
 @Injectable()
 export class RepositoryService {
   public user: UserRepository;
-  public transaction: TransactionRepository;
-  public betable: BetableRepository;
-  public betablePurchase: BetablePurchaseRepository;
+  public payment: PaymentRepository;
+  public purchasable: PurchasableRepository;
+  public purchase: PurchaseRepository;
 
   constructor(@Inject(DB) database: DbType) {
     this.user = new UserRepository(database);
-    this.transaction = new TransactionRepository(database);
-    this.betable = new BetableRepository(database);
-    this.betablePurchase = new BetablePurchaseRepository(database);
+    this.payment = new PaymentRepository(database);
+    this.purchasable = new PurchasableRepository(database);
+    this.purchase = new PurchaseRepository(database);
   }
 }

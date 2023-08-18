@@ -6,9 +6,9 @@ export class PurchasablesService {
   constructor(private repos: RepositoryService) {}
 
   async findAll() {
-    const betables = await this.repos.betable.findAll();
+    const purchasables = await this.repos.purchasable.findAll();
 
-    return betables;
+    return purchasables;
   }
 
   findOne(id: number) {
@@ -16,7 +16,7 @@ export class PurchasablesService {
   }
 
   async buyOne(id: number, userId: number) {
-    const purchase = await this.repos.betablePurchase.create({
+    const purchase = await this.repos.purchase.create({
       isSell: false,
       purchasableId: id,
       buyerId: userId,
@@ -26,7 +26,7 @@ export class PurchasablesService {
   }
 
   async sellOne(id: number, userId: number) {
-    const purchase = await this.repos.betablePurchase.create({
+    const purchase = await this.repos.purchase.create({
       isSell: true,
       purchasableId: id,
       buyerId: userId,

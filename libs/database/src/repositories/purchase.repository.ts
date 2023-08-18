@@ -3,7 +3,7 @@ import { InferModel, eq, sql } from 'drizzle-orm';
 import { purchaseSchema, purchasableSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
-export class BetablePurchaseRepository {
+export class PurchaseRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
   async create(createPurchaseDto: InferModel<typeof purchaseSchema, 'insert'>) {

@@ -3,7 +3,7 @@ import { InferModel, eq, sql } from 'drizzle-orm';
 import { paymentSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
-export class TransactionRepository {
+export class PaymentRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
   async create(
