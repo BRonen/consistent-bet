@@ -1,10 +1,16 @@
-import { Controller, Post, Param, Request, UseGuards } from '@nestjs/common';
+import { Controller, Post, Param, Request, UseGuards, Get } from '@nestjs/common';
 import { PurchasesService } from './purchases.service';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('purchases')
 export class PurchasesController {
   constructor(private readonly purchasesService: PurchasesService) {}
+
+  @UseGuards(AuthGuard)
+  @Get()
+  findAll() {
+    return this.purchasesService.findAll();
+  }
 
   @UseGuards(AuthGuard)
   @Post(':id/buy')

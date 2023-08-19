@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { InferModel, eq, sql } from 'drizzle-orm';
 import { paymentSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
+import { alias } from 'drizzle-orm/pg-core';
 
 export class PaymentRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
@@ -18,15 +19,27 @@ export class PaymentRepository {
   }
 
   async findAll() {
+    const receiverSchema = alias(userSchema, "receiver");
+    const senderSchema = alias(userSchema, "sender");
     const users = await this.database
       .select({
         id: paymentSchema.id,
         status: paymentSchema.status,
         amount: paymentSchema.amount,
-        receiverId: paymentSchema.receiverId,
-        senderId: paymentSchema.senderId,
+        receiver: {
+          id: receiverSchema.id,
+          name: receiverSchema.name,
+          email: receiverSchema.email,
+        },
+        sender: {
+          id: senderSchema.id,
+          name: senderSchema.name,
+          email: senderSchema.email,
+        },
       })
-      .from(paymentSchema);
+      .from(paymentSchema)
+      .leftJoin(receiverSchema, eq(receiverSchema.id, paymentSchema.receiverId))
+      .leftJoin(senderSchema, eq(senderSchema.id, paymentSchema.senderId));
 
     return users;
   }
