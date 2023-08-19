@@ -1,7 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
-import { BetableRepository } from '../libs/database/src/repositories/purchasable.repository';
+import { PurchasableRepository } from '../libs/database/src/repositories/purchasable.repository';
 
 import "dotenv/config";
 
@@ -13,7 +13,7 @@ migrate(database, { migrationsFolder: './drizzle' })
 .then(async () => {
     console.log('migrated successfully!');
     
-    const repository = new BetableRepository(database);
+    const repository = new PurchasableRepository(database);
 
     await repository.create({
         name: 'teste',

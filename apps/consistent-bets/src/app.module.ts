@@ -5,7 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PaymentsModule } from './payments/payments.module';
-import { BetableModule } from './purchasables/purchasables.module';
+import { PurchasablesModule } from './purchasables/purchasables.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { BetableModule } from './purchasables/purchasables.module';
     UsersModule,
     AuthModule,
     PaymentsModule,
-    BetableModule,
+    PurchasablesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
