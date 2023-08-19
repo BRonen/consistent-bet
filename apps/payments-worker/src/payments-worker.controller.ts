@@ -3,10 +3,10 @@ import { PaymentsWorkerService } from './payments-worker.service';
 
 @Controller()
 export class PaymentsWorkerController {
-  constructor(private readonly PaymentsWorkerService: PaymentsWorkerService) {}
+  constructor(private readonly paymentsWorkerService: PaymentsWorkerService) {}
 
   @Get()
-  getHello(): string {
-    return this.PaymentsWorkerService.getHello();
+  getHealthcheck(): string {
+    return this.paymentsWorkerService.getHealthcheck();
   }
 }

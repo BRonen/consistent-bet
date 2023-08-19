@@ -17,15 +17,15 @@ export class JobsService {
 
   @Cron(CronExpression.EVERY_10_SECONDS)
   handlePaymentsProcess() {
-    this.logger.debug('Processing one transaction');
+    this.logger.debug('Processing one payment');
 
-    this.repos.transaction.processById();
+    this.repos.payment.processById();
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)
   handlePurchaseProcess() {
     this.logger.debug('Processing one purchase');
 
-    this.repos.betablePurchase.processPurchase();
+    this.repos.purchase.processPurchase();
   }
 }
