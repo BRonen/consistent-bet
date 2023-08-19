@@ -30,7 +30,6 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^3.0.2",
     "bcrypt": "^5.1.0",
-    "better-sqlite3": "^8.5.0",
     "drizzle-orm": "^0.28.1",
     "postgres": "^3.3.5",
     "reflect-metadata": "^0.1.13",

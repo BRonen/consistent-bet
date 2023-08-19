@@ -29,8 +29,8 @@ export class PurchaseRepository {
     return purchases;
   }
 
-  async processPurchase() {
-    return await this.database.transaction(async (tx) => {
+  processPurchase() {
+    return this.database.transaction(async (tx) => {
       await tx.execute(sql`LOCK TABLE Payments IN ROW EXCLUSIVE MODE;`);
 
       const [purchase] = await tx
