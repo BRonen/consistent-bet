@@ -12,26 +12,6 @@ export class PurchasablesService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} betable`;
-  }
-
-  async buyOne(id: number, userId: number) {
-    const purchase = await this.repos.purchase.create({
-      isSell: false,
-      purchasableId: id,
-      buyerId: userId,
-    });
-
-    return purchase;
-  }
-
-  async sellOne(id: number, userId: number) {
-    const purchase = await this.repos.purchase.create({
-      isSell: true,
-      purchasableId: id,
-      buyerId: userId,
-    });
-
-    return purchase;
+    return this.repos.purchasable.findById(id);
   }
 }

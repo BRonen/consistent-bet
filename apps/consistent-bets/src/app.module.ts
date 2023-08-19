@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PaymentsModule } from './payments/payments.module';
 import { PurchasablesModule } from './purchasables/purchasables.module';
+import { PurchasesModule } from './purchases/purchases.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { PurchasablesModule } from './purchasables/purchasables.module';
     AuthModule,
     PaymentsModule,
     PurchasablesModule,
+    PurchasesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -21,16 +21,4 @@ export class PurchasablesController {
   findOne(@Param('id') id: string) {
     return this.purchasablesService.findOne(+id);
   }
-
-  @UseGuards(AuthGuard)
-  @Post(':id/buy')
-  buyOne(@Request() res, @Param('id') id: string) {
-    return this.purchasablesService.buyOne(+id, res.user.id);
-  }
-
-  @UseGuards(AuthGuard)
-  @Post(':id/sell')
-  sellOne(@Request() res, @Param('id') id: string) {
-    return this.purchasablesService.sellOne(+id, res.user.id);
-  }
 }

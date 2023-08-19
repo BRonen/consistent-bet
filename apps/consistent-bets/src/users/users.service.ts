@@ -25,8 +25,8 @@ export class UsersService {
     return users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findById(id: number) {
+    return this.repos.user.findById(id);
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {

@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { InferModel } from 'drizzle-orm';
+import { InferModel, eq } from 'drizzle-orm';
 import { purchasableSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
@@ -9,16 +9,16 @@ export class PurchasableRepository {
   async create(
     createTransactionDto: InferModel<typeof purchasableSchema, 'insert'>,
   ) {
-    const [betable] = await this.database
+    const [purchasable] = await this.database
       .insert(purchasableSchema)
       .values(createTransactionDto)
       .returning();
 
-    return betable;
+    return purchasable;
   }
 
   async findAll() {
-    const betables = await this.database
+    const purchasables = await this.database
       .select({
         id: purchasableSchema.id,
         name: purchasableSchema.name,
@@ -26,6 +26,20 @@ export class PurchasableRepository {
       })
       .from(purchasableSchema);
 
-    return betables;
+    return purchasables;
+  }
+
+  async findById(id: number) {
+    const [purchasables] = await this.database
+      .select({
+        id: purchasableSchema.id,
+        name: purchasableSchema.name,
+        price: purchasableSchema.price,
+      })
+      .from(purchasableSchema)
+      .where(eq(purchasableSchema.id, id))
+      .limit(1);
+
+    return purchasables;
   }
 }

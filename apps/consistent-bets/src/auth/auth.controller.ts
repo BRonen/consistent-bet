@@ -9,10 +9,11 @@ import {
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { AuthGuard } from './auth.guard';
+import { UsersService } from '../users/users.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private readonly userService: UsersService) {}
 
   @Post()
   create(@Body() createAuthDto: CreateAuthDto) {
@@ -22,6 +23,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get()
   getProfile(@Request() req) {
-    return req.user;
+    return this.userService.findById(req.user.id);
   }
 }

@@ -43,6 +43,21 @@ export class UserRepository {
     return users;
   }
 
+  async findById(id: number) {
+    const [user] = await this.database
+      .select({
+        id: userSchema.id,
+        name: userSchema.name,
+        email: userSchema.email,
+        balance: userSchema.balance,
+      })
+      .from(userSchema)
+      .where(eq(userSchema.id, id))
+      .limit(1);
+
+    return user;
+  }
+
   async updateById(id: UserType['id'], updateUserDto: Partial<UserType>) {
     const users = await this.database
       .update(userSchema)
