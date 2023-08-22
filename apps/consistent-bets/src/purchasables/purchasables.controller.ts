@@ -1,13 +1,5 @@
-import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { PurchasablesService } from './purchasables.service';
-import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('purchasables')
 export class PurchasablesController {

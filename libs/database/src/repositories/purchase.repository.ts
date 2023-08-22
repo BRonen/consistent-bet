@@ -4,7 +4,7 @@ import { purchaseSchema, purchasableSchema, userSchema } from '../schema';
 import { DB, DbType } from '../database.provider';
 
 export class PurchaseRepository {
-  constructor(@Inject(DB) private readonly database: DbType) { }
+  constructor(@Inject(DB) private readonly database: DbType) {}
 
   async create(createPurchaseDto: InferModel<typeof purchaseSchema, 'insert'>) {
     const [betable] = await this.database
@@ -33,9 +33,12 @@ export class PurchaseRepository {
       })
       .from(purchaseSchema)
       .leftJoin(userSchema, eq(userSchema.id, purchaseSchema.buyerId))
-      .leftJoin(purchasableSchema, eq(purchasableSchema.id, purchaseSchema.purchasableId))
+      .leftJoin(
+        purchasableSchema,
+        eq(purchasableSchema.id, purchaseSchema.purchasableId),
+      );
 
-    console.log(purchases)
+    console.log(purchases);
 
     return purchases;
   }

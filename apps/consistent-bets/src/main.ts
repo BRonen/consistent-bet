@@ -5,9 +5,9 @@ import { Enviroment } from '@consistent-bets/config';
 
 async function bootstrap() {
   const { env } = new Enviroment();
-  
+
   const app = await NestFactory.create(AppModule);
-  
+
   app.useGlobalFilters(new AllExceptionsFilter());
 
   await app.listen(env.PORT);

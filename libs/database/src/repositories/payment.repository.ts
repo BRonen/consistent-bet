@@ -19,8 +19,8 @@ export class PaymentRepository {
   }
 
   async findAll() {
-    const receiverSchema = alias(userSchema, "receiver");
-    const senderSchema = alias(userSchema, "sender");
+    const receiverSchema = alias(userSchema, 'receiver');
+    const senderSchema = alias(userSchema, 'sender');
     const users = await this.database
       .select({
         id: paymentSchema.id,
