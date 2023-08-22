@@ -24,6 +24,12 @@
       ],
       "@consistent-bets/database/*": [
         "libs/database/src/*"
+      ],
+      "@consistent-bets/config": [
+        "libs/config/src"
+      ],
+      "@consistent-bets/config/*": [
+        "libs/config/src/*"
       ]
     }
   }

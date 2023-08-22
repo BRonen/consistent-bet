@@ -22,7 +22,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
             timestamp: new Date().toISOString(),
         });
 
-        if(status === 500)
+        if(status === HttpStatus.INTERNAL_SERVER_ERROR)
             return response
                 .status(500)
                 .json({

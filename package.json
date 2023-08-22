@@ -84,7 +84,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@consistent-bets/database(|/.*)$": "<rootDir>/libs/database/src/$1"
+      "^@consistent-bets/database(|/.*)$": "<rootDir>/libs/database/src/$1",
+      "^@consistent-bets/config(|/.*)$": "<rootDir>/libs/config/src/$1"
     }
   }
 }
