@@ -10,7 +10,7 @@ async function bootstrap() {
   
   app.useGlobalFilters(new AllExceptionsFilter());
 
-  await app.listen(env.PORT + 1);
+  await app.listen(env.PORT);
 }
 
 bootstrap();
