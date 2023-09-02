@@ -1,49 +1,22 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/consistent-bets/src",
+  "sourceRoot": "apps/auth-service/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/consistent-bets/tsconfig.app.json"
+    "tsConfigPath": "apps/auth-service/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/consistent-bets",
+  "root": "apps/auth-service",
   "projects": {
-    "consistent-bets": {
+    "auth-service": {
       "type": "application",
-      "root": "apps/consistent-bets",
+      "root": "apps/auth-service",
       "entryFile": "main",
-      "sourceRoot": "apps/consistent-bets/src",
+      "sourceRoot": "apps/auth-service/src",
       "compilerOptions": {
-        "tsConfigPath": "apps/consistent-bets/tsconfig.app.json"
-      }
-    },
-    "payments-worker": {
-      "type": "application",
-      "root": "apps/payments-worker",
-      "entryFile": "main",
-      "sourceRoot": "apps/payments-worker/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/payments-worker/tsconfig.app.json"
-      }
-    },
-    "database": {
-      "type": "library",
-      "root": "libs/database",
-      "entryFile": "index",
-      "sourceRoot": "libs/database/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/database/tsconfig.lib.json"
-      }
-    },
-    "config": {
-      "type": "library",
-      "root": "libs/config",
-      "entryFile": "index",
-      "sourceRoot": "libs/config/src",
-      "compilerOptions": {
-        "tsConfigPath": "libs/config/tsconfig.lib.json"
+        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
       }
     }
   }

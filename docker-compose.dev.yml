@@ -2,21 +2,26 @@ services:
   auth-service:
     build: 
       dockerfile: ./docker/Dockerfile.auth-service
+    entrypoint: pnpm run start:auth-service:debug
     restart: always
+    volumes:
+      - "${PWD}:/app"
     environment:
       - PORT=3000
       - AUTH_DATABASE_URI=postgres://postgres:password@auth-database:5432/auth_database
       - JWT_SECRET=jwt_consistent_bets
+    ports:
+      - 3000:3000
     networks:
       - auth-network
-    depends_on:
-      - auth-database
   auth-database:
     image: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: auth_database
+    ports:
+      - 5432:5432
     networks:
       - auth-network
 

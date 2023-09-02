@@ -5,21 +5,24 @@
   "author": "Brenno Rodrigues",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
-    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "concurrently 'nest start --watch' 'nest start --watch payments-worker'",
-    "start:debug": "concurrently 'nest start --debug --watch' 'nest start --debug --watch payments-worker'",
-    "start:prod": "node dist/apps/consistent-bets/main",
-    "start:prod:worker": "node dist/apps/payments-worker/main",
+    "format": "prettier --write \"apps/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/consistent-bets/test/jest-e2e.json",
-    "migrate": "ts-node scripts/migrate.ts",
-    "migrate:generate": "drizzle-kit generate:pg --schema=./libs/database/src/schema.ts"
+    
+    "build": "nest build",
+
+    "start:auth-service": "nest start",
+    "start:auth-service:dev": "nest start --watch",
+    "start:auth-service:debug": "nest start --debug --watch",
+    "start:auth-service:prod": "node dist/apps/auth-service/main",
+
+    "migrate:auth-service": "ts-node scripts/migrate/migrate-auth-service.ts",
+    "migrate:auth-service:generate": "drizzle-kit generate:pg --out=migrations/auth-service --schema=./apps/auth-service/src/schemas.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -79,13 +82,6 @@
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
-    "roots": [
-      "<rootDir>/apps/",
-      "<rootDir>/libs/"
-    ],
-    "moduleNameMapper": {
-      "^@consistent-bets/database(|/.*)$": "<rootDir>/libs/database/src/$1",
-      "^@consistent-bets/config(|/.*)$": "<rootDir>/libs/config/src/$1"
-    }
+    "roots": ["<rootDir>/apps/"]
   }
 }
