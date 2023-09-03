@@ -1,11 +1,11 @@
 import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
+import path from 'path';
 
 import { AuthEnviroment } from '../../apps/auth-service/src/auth-environment';
 
 import "dotenv/config";
-import path from 'path';
 
 const { env } = new AuthEnviroment()
 

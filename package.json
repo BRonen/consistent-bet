@@ -7,31 +7,38 @@
   "scripts": {
     "format": "prettier --write \"apps/**/*.ts\"",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/consistent-bets/test/jest-e2e.json",
-    
     "build": "nest build",
-
     "start:auth-service": "nest start",
     "start:auth-service:dev": "nest start --watch",
     "start:auth-service:debug": "nest start --debug --watch",
     "start:auth-service:prod": "node dist/apps/auth-service/main",
-
     "migrate:auth-service": "ts-node scripts/migrate/migrate-auth-service.ts",
-    "migrate:auth-service:generate": "drizzle-kit generate:pg --out=migrations/auth-service --schema=./apps/auth-service/src/schemas.ts"
+    "migrate:auth-service:generate": "drizzle-kit generate:pg --out=migrations/auth-service --schema=./apps/auth-service/src/schemas.ts",
+    "start:ledger-service": "nest start ledger-service",
+    "start:ledger-service:dev": "nest start --watch ledger-service",
+    "start:ledger-service:debug": "nest start --debug --watch ledger-service",
+    "start:ledger-service:prod": "node dist/apps/ledger-service/main",
+    "migrate:ledger-service": "ts-node scripts/migrate/migrate-ledger-service.ts",
+    "migrate:ledger-service:generate": "drizzle-kit generate:pg --out=migrations/ledger-service --schema=./apps/ledger-service/src/schemas.ts"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.2",
+    "@grpc/proto-loader": "^0.7.9",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.1.0",
     "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^10.2.4",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^3.0.2",
+    "amqp-connection-manager": "^4.1.14",
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.0",
     "drizzle-orm": "^0.28.1",
     "postgres": "^3.3.5",
@@ -64,7 +71,7 @@
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.2.2"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -82,6 +89,8 @@
     ],
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
-    "roots": ["<rootDir>/apps/"]
+    "roots": [
+      "<rootDir>/apps/"
+    ]
   }
 }

@@ -2,12 +2,11 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   PORT: z.coerce.number(),
-  AUTH_DATABASE_URI: z.string().url(),
-  LEDGER_SERVICE_URI: z.string(),
+  LEDGER_DATABASE_URI: z.string().url(),
   JWT_SECRET: z.string(),
 });
 
-export class AuthEnviroment {
+export class LedgerEnviroment {
   public readonly env: typeof envSchema._type;
 
   constructor() {

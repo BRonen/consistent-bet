@@ -5,7 +5,9 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+    "tsConfigPath": "apps/auth-service/tsconfig.app.json",
+    "assets": ["**/*.proto"],
+    "watchAssets": true
   },
   "monorepo": true,
   "root": "apps/auth-service",
@@ -17,6 +19,15 @@
       "sourceRoot": "apps/auth-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+      }
+    },
+    "ledger-service": {
+      "type": "application",
+      "root": "apps/ledger-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/ledger-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ledger-service/tsconfig.app.json"
       }
     }
   }

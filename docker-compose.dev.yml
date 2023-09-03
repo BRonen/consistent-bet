@@ -9,11 +9,14 @@ services:
     environment:
       - PORT=3000
       - AUTH_DATABASE_URI=postgres://postgres:password@auth-database:5432/auth_database
+      - LEDGER_SERVICE_URI=ledger-service:9090
       - JWT_SECRET=jwt_consistent_bets
     ports:
       - 3000:3000
     networks:
+      - services-network
       - auth-network
+
   auth-database:
     image: postgres
     restart: always
@@ -25,5 +28,38 @@ services:
     networks:
       - auth-network
 
+  ledger-service:
+    build: 
+      dockerfile: ./docker/Dockerfile.ledger-service
+    entrypoint: pnpm run start:ledger-service:debug
+    restart: always
+    volumes:
+      - "${PWD}:/app"
+    environment:
+      - PORT=3001
+      - LEDGER_DATABASE_URI=postgres://postgres:password@ledger-database:5432/ledger_database
+      - JWT_SECRET=jwt_consistent_bets
+    ports:
+      - 3001:3001
+      - 9090:9090
+    networks:
+      - services-network
+      - ledger-network
+
+  ledger-database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ledger_database
+    ports:
+      - 5433:5432
+    networks:
+      - ledger-network
+
 networks:
+  services-network:
+
   auth-network:
+
+  ledger-network:
