@@ -6,9 +6,7 @@ import { DB, DbType } from '../database/database.provider';
 export class PaymentRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
 
-  async create(
-    createPaymentDto: InferModel<typeof paymentSchema, 'insert'>,
-  ) {
+  async create(createPaymentDto: InferModel<typeof paymentSchema, 'insert'>) {
     const [user] = await this.database
       .insert(paymentSchema)
       .values(createPaymentDto)

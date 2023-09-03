@@ -1,8 +1,15 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, ClientsModuleOptions, Transport } from '@nestjs/microservices';
+import {
+  ClientsModule,
+  ClientsModuleOptions,
+  Transport,
+} from '@nestjs/microservices';
 import path from 'path';
 
-import { AuthServiceController, AuthServiceService } from './auth-service.controller';
+import {
+  AuthServiceController,
+  AuthServiceService,
+} from './auth-service.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AuthEnviroment } from './auth-environment';
@@ -24,9 +31,7 @@ const getConfigGRPC = (): ClientsModuleOptions => {
 };
 
 @Module({
-  imports: [
-    ClientsModule.register(getConfigGRPC()),
-    AuthModule, UsersModule],
+  imports: [ClientsModule.register(getConfigGRPC()), AuthModule, UsersModule],
   controllers: [AuthServiceController],
   providers: [AuthServiceService],
 })

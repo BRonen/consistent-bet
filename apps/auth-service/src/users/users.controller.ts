@@ -4,14 +4,13 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   create(@Body() body: unknown) {
     const createUserDto = new CreateUserDto(body);
 
-    if(!createUserDto.success)
-      throw new HttpException('Invalid payload', 400)
+    if (!createUserDto.success) throw new HttpException('Invalid payload', 400);
 
     return this.usersService.create(createUserDto);
   }

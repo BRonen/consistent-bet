@@ -1,5 +1,5 @@
 export class CreatePaymentDto {
-    amount: number
-    receiverId: number
-    senderId: number;
+  amount: number;
+  receiverId: number;
+  senderId: number;
 }

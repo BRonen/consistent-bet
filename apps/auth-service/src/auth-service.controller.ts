@@ -1,7 +1,12 @@
-import { Controller, Get, Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Injectable,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
-
 
 interface HeroService {
   findOne(data: { id: number }): Observable<any>;
@@ -14,7 +19,7 @@ export class AuthServiceService implements OnModuleInit {
   constructor(@Inject('HERO_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit() {
-    console.log(this.client.getService<HeroService>('hero'))
+    console.log(this.client.getService<HeroService>('hero'));
     this.heroesService = this.client.getService<HeroService>('hero');
   }
 
@@ -25,13 +30,11 @@ export class AuthServiceService implements OnModuleInit {
 
 @Controller()
 export class AuthServiceController {
-  constructor (
-    private authServiceService: AuthServiceService
-  ) {}
+  constructor(private authServiceService: AuthServiceService) {}
 
   @Get('/aaa')
   test() {
-    return(this.authServiceService.getHero());
+    return this.authServiceService.getHero();
   }
 
   @Get('/healthz')

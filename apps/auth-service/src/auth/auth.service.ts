@@ -12,8 +12,10 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async login({email, password}: CreateAuthDto) {
-    const { id, name, hash } = await this.repositories.user.getUserHashByEmail(email);
+  async login({ email, password }: CreateAuthDto) {
+    const { id, name, hash } = await this.repositories.user.getUserHashByEmail(
+      email,
+    );
 
     const isAuthenticated = await bcrypt.compare(password, hash);
 

@@ -5,9 +5,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class PaymentsService {
-  constructor (
-    private readonly repositories: RepositoriesService,
-  ) { }
+  constructor(private readonly repositories: RepositoriesService) {}
 
   create(createPaymentDto: CreatePaymentDto) {
     return this.repositories.payment.create(createPaymentDto);
