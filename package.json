@@ -24,7 +24,8 @@
     "start:ledger-service:debug": "nest start --debug --watch ledger-service",
     "start:ledger-service:prod": "node dist/apps/ledger-service/main",
     "migrate:ledger-service": "ts-node scripts/migrate/migrate-ledger-service.ts",
-    "migrate:ledger-service:generate": "drizzle-kit generate:pg --out=migrations/ledger-service --schema=./apps/ledger-service/src/schemas.ts"
+    "migrate:ledger-service:generate": "drizzle-kit generate:pg --out=migrations/ledger-service --schema=./apps/ledger-service/src/schemas.ts",
+    "migrate:*": "concurrently 'ts-node scripts/migrate/migrate-ledger-service.ts' 'ts-node scripts/migrate/migrate-auth-service.ts'"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.9.2",

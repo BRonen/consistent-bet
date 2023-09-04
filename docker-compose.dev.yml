@@ -3,7 +3,6 @@ services:
     build: 
       dockerfile: ./docker/Dockerfile.auth-service
     entrypoint: pnpm run start:auth-service:debug
-    restart: always
     volumes:
       - "${PWD}:/app"
     environment:
@@ -14,12 +13,12 @@ services:
     ports:
       - 3000:3000
     networks:
+      - mq-network
       - services-network
       - auth-network
 
   auth-database:
     image: postgres
-    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: auth_database
@@ -43,12 +42,12 @@ services:
       - 3001:3001
       - 9090:9090
     networks:
+      - mq-network
       - services-network
       - ledger-network
 
   ledger-database:
     image: postgres
-    restart: always
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: ledger_database
@@ -57,9 +56,19 @@ services:
     networks:
       - ledger-network
 
+  events-mq:
+    image: rabbitmq:3-management-alpine
+    ports:
+        - 5672:5672
+        - 15672:15672
+    networks:
+      - mq-network
+
 networks:
   services-network:
 
   auth-network:
 
   ledger-network:
+
+  mq-network:

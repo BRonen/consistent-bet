@@ -6,15 +6,12 @@ import {
 } from '@nestjs/microservices';
 import path from 'path';
 
-import {
-  AuthServiceController,
-  AuthServiceService,
-} from './auth-service.controller';
+import { AuthServiceController } from './auth-service.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { AuthEnviroment } from './auth-environment';
 
-const getConfigGRPC = (): ClientsModuleOptions => {
+const getConfigClients = (): ClientsModuleOptions => {
   const { env } = new AuthEnviroment();
 
   return [
@@ -27,12 +24,27 @@ const getConfigGRPC = (): ClientsModuleOptions => {
         protoPath: path.join(__dirname, '../ledger-service/hero/hero.proto'),
       },
     },
+    {
+      name: 'MATH_SERVICE',
+      transport: Transport.RMQ,
+      options: {
+        urls: ['amqp://events-mq:5672'],
+        queue: 'cats_queue',
+        noAck: true,
+        queueOptions: {
+          durable: true,
+        },
+      },
+    },
   ];
 };
 
 @Module({
-  imports: [ClientsModule.register(getConfigGRPC()), AuthModule, UsersModule],
+  imports: [
+    ClientsModule.register(getConfigClients()),
+    AuthModule,
+    UsersModule,
+  ],
   controllers: [AuthServiceController],
-  providers: [AuthServiceService],
 })
 export class AuthServiceModule {}

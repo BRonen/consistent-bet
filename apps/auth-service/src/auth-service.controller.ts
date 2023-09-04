@@ -1,40 +1,30 @@
-import {
-  Controller,
-  Get,
-  Inject,
-  Injectable,
-  OnModuleInit,
-} from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { ClientGrpc, ClientProxy } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 
 interface HeroService {
   findOne(data: { id: number }): Observable<any>;
 }
 
-@Injectable()
-export class AuthServiceService implements OnModuleInit {
-  public heroesService: HeroService;
-
-  constructor(@Inject('HERO_PACKAGE') private client: ClientGrpc) {}
-
-  onModuleInit() {
-    console.log(this.client.getService<HeroService>('hero'));
-    this.heroesService = this.client.getService<HeroService>('hero');
-  }
-
-  getHero(): any {
-    return this.heroesService.findOne({ id: 1 });
-  }
-}
-
 @Controller()
 export class AuthServiceController {
-  constructor(private authServiceService: AuthServiceService) {}
+  public heroesService: HeroService;
+  public catsService: ClientProxy;
+
+  constructor(
+    @Inject('HERO_PACKAGE') private client: ClientGrpc,
+    @Inject('MATH_SERVICE') private queue: ClientProxy,
+  ) {}
+
+  onModuleInit() {
+    this.heroesService = this.client.getService<HeroService>('hero');
+    // this.queue.consumeChannel({ cmd: 'notifications' }).then()
+  }
 
   @Get('/aaa')
   test() {
-    return this.authServiceService.getHero();
+    const a = this.queue.send('notifications', { text: 'wasdwasdwasdwasd' }); // .subscribe((...args) => console.log('waasd', ...args));
+    return a; // this.heroesService.findOne({ id: 1 });
   }
 
   @Get('/healthz')

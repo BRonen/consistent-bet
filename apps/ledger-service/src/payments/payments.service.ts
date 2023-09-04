@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { RepositoriesService } from '../repositories/repositories.service';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -15,7 +15,7 @@ export class PaymentsService {
     return this.repositories.payment.findAll();
   }
 
-  @Cron(CronExpression.EVERY_SECOND)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   processNewPayments() {
     // const logger = new Logger('Cron');
 

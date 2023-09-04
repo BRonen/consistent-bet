@@ -18,6 +18,18 @@ async function bootstrap() {
     },
   });
 
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: ['amqp://events-mq:5672'],
+      queue: 'cats_queue',
+      noAck: false,
+      queueOptions: {
+        durable: true,
+      },
+    },
+  });
+
   await app.startAllMicroservices();
 
   await app.listen(env.PORT);
