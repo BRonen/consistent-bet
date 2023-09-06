@@ -20,7 +20,8 @@ export class UsersService {
   ) {}
 
   onModuleInit() {
-    this.ledgerService = this.LedgerClient.getService<LedgerService>('LedgerService');
+    this.ledgerService =
+      this.LedgerClient.getService<LedgerService>('LedgerService');
   }
 
   async create(createUserDto: CreateUserDto) {
@@ -36,26 +37,28 @@ export class UsersService {
 
   async findAll() {
     const users = await this.repositories.user.findAll();
-    
-    return Promise.all(users.map(async user => {
-      const findLedgerByUserId = new Promise((resolve) => {
-        this.ledgerService.findOne({id: user.id}).subscribe(resolve);
-      })
 
-      return {
-        ...user,
-        ledger: await findLedgerByUserId,
-      };
-    }));
+    return Promise.all(
+      users.map(async (user) => {
+        const findLedgerByUserId = new Promise((resolve) => {
+          this.ledgerService.findOne({ id: user.id }).subscribe(resolve);
+        });
+
+        return {
+          ...user,
+          ledger: await findLedgerByUserId,
+        };
+      }),
+    );
   }
 
   @Cron(CronExpression.EVERY_10_SECONDS)
   async outboxProcessing() {
     const events = await this.repositories.outboxEvents.findNotProcessed();
 
-    for(const event of events) {
-      this.QueueService.emit(event.event_name, event).subscribe(
-        () => this.repositories.outboxEvents.markAsProcessed(event.id)
+    for (const event of events) {
+      this.QueueService.emit(event.event_name, event).subscribe(() =>
+        this.repositories.outboxEvents.markAsProcessed(event.id),
       );
     }
   }

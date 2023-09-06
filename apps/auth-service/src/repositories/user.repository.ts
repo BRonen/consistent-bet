@@ -30,14 +30,12 @@ export class UserRepository {
           name: userSchema.name,
           email: userSchema.email,
         });
-      
-      await tx
-        .insert(outboxEventSchema)
-        .values({
-          event_name: 'CREATE_LEDGER',
-          user_id: user.id,
-        })
-  
+
+      await tx.insert(outboxEventSchema).values({
+        event_name: 'CREATE_LEDGER',
+        user_id: user.id,
+      });
+
       return user;
     });
   }

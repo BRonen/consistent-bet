@@ -4,6 +4,5 @@ import { RepositoriesService } from '../repositories/repositories.service';
 
 @Injectable()
 export class LedgerService {
-    constructor(private readonly repositories: RepositoriesService) { }
-
+  constructor(private readonly repositories: RepositoriesService) {}
 }

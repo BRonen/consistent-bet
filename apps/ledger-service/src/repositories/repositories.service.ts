@@ -7,7 +7,7 @@ import { LedgerRepository } from './ledger.repository';
 export class RepositoriesService {
   public payment: PaymentRepository;
   public ledger: LedgerRepository;
-  
+
   constructor(@Inject(DB) database: DbType) {
     this.payment = new PaymentRepository(database);
     this.ledger = new LedgerRepository(database);

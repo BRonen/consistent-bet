@@ -5,11 +5,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { LedgerModule } from './ledger/ledger.module';
 
 @Module({
-  imports: [
-    ScheduleModule.forRoot(),
-    PaymentsModule,
-    LedgerModule,
-  ],
+  imports: [ScheduleModule.forRoot(), PaymentsModule, LedgerModule],
   controllers: [LedgerServiceController],
 })
 export class LedgerServiceModule {}

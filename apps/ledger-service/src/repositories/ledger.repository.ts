@@ -25,7 +25,7 @@ export class LedgerRepository {
 
     return payments;
   }
-  
+
   async findById(id: number) {
     const [ledger] = await this.database
       .select({
