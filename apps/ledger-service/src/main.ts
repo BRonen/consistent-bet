@@ -13,8 +13,8 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       url: '0.0.0.0:9090',
-      package: 'hero',
-      protoPath: path.join(__dirname, './hero/hero.proto'),
+      package: 'ledger',
+      protoPath: path.join(__dirname, './ledger/ledger.proto'),
     },
   });
 
@@ -22,7 +22,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://events-mq:5672'],
-      queue: 'cats_queue',
+      queue: 'events_queue',
       noAck: false,
       queueOptions: {
         durable: true,

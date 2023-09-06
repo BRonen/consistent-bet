@@ -1,47 +1,20 @@
 import { Module } from '@nestjs/common';
-import {
-  ClientsModule,
-  ClientsModuleOptions,
-  Transport,
-} from '@nestjs/microservices';
-import path from 'path';
 
 import { AuthServiceController } from './auth-service.controller';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { AuthEnviroment } from './auth-environment';
-
-const getConfigClients = (): ClientsModuleOptions => {
-  const { env } = new AuthEnviroment();
-
-  return [
-    {
-      name: 'HERO_PACKAGE',
-      transport: Transport.GRPC,
-      options: {
-        url: env.LEDGER_SERVICE_URI,
-        package: 'hero',
-        protoPath: path.join(__dirname, '../ledger-service/hero/hero.proto'),
-      },
-    },
-    {
-      name: 'MATH_SERVICE',
-      transport: Transport.RMQ,
-      options: {
-        urls: ['amqp://events-mq:5672'],
-        queue: 'cats_queue',
-        noAck: true,
-        queueOptions: {
-          durable: true,
-        },
-      },
-    },
-  ];
-};
+import { ClientsModule } from '@nestjs/microservices';
+import { getLedgerClient } from './ledger.client';
+import { getQueueClient } from './queue.client';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
-    ClientsModule.register(getConfigClients()),
+    ClientsModule.register({
+      clients: [getLedgerClient(), getQueueClient()],
+      isGlobal: true,
+    }),
+    ScheduleModule.forRoot(),
     AuthModule,
     UsersModule,
   ],

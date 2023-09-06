@@ -1,6 +1,6 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, eq } from 'drizzle-orm';
-import { UserType, userSchema } from '../schemas';
+import { UserType, outboxEventSchema, userSchema } from '../schemas';
 import { DB, DbType } from '../database/database.provider';
 
 export class UserRepository {
@@ -21,14 +21,25 @@ export class UserRepository {
   }
 
   async create(createUserDto: InferModel<typeof userSchema, 'insert'>) {
-    const query = await this.database
-      .insert(userSchema)
-      .values(createUserDto)
-      .returning();
-
-    const [user] = query.values();
-
-    return user;
+    return await this.database.transaction(async (tx) => {
+      const [user] = await tx
+        .insert(userSchema)
+        .values(createUserDto)
+        .returning({
+          id: userSchema.id,
+          name: userSchema.name,
+          email: userSchema.email,
+        });
+      
+      await tx
+        .insert(outboxEventSchema)
+        .values({
+          event_name: 'CREATE_LEDGER',
+          user_id: user.id,
+        })
+  
+      return user;
+    });
   }
 
   async findAll() {
