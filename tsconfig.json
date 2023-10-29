@@ -17,20 +17,6 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "esModuleInterop": true,
-    "paths": {
-      "@consistent-bets/database": [
-        "libs/database/src"
-      ],
-      "@consistent-bets/database/*": [
-        "libs/database/src/*"
-      ],
-      "@consistent-bets/config": [
-        "libs/config/src"
-      ],
-      "@consistent-bets/config/*": [
-        "libs/config/src/*"
-      ]
-    }
+    "esModuleInterop": true
   }
 }

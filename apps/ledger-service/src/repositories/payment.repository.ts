@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
 import { InferModel, eq, sql } from 'drizzle-orm';
-import { ledgerSchema, paymentSchema } from '../schemas';
-import { DB, DbType } from '../database/database.provider';
+import { paymentSchema } from '../schemas';
+import { DB, DbTransaction, DbType } from '../database/database.provider';
 
 export class PaymentRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
@@ -29,30 +29,20 @@ export class PaymentRepository {
     return payments;
   }
 
-  async processPendingPayment() {
-    await this.database.transaction(async (tx) => {
-      const [payment] = await tx
-        .select()
-        .from(paymentSchema)
-        .limit(1)
-        .where(sql`${paymentSchema.status} = 'processing' FOR SHARE`);
+  async getNotProcessedPayment(tx: DbTransaction) {
+    const [payment] = await tx
+      .select()
+      .from(paymentSchema)
+      .limit(1)
+      .where(sql`${paymentSchema.status} = 'not_processed' FOR SHARE`);
 
-      if (!payment) return;
+    return payment;
+  }
 
-      await Promise.all([
-        tx
-          .update(ledgerSchema)
-          .set({ balance: sql`${ledgerSchema.balance} - ${payment.amount}` })
-          .where(eq(ledgerSchema.id, payment.senderId)),
-        tx
-          .update(ledgerSchema)
-          .set({ balance: sql`${ledgerSchema.balance} + ${payment.amount}` })
-          .where(eq(ledgerSchema.id, payment.receiverId)),
-        tx
-          .update(paymentSchema)
-          .set({ status: 'processed' })
-          .where(eq(paymentSchema.id, payment.id)),
-      ]);
-    });
+  setPaymentAsProcessed(tx: DbTransaction, paymentId: number){
+    return tx
+      .update(paymentSchema)
+      .set({ status: 'processed' })
+      .where(eq(paymentSchema.id, paymentId));
   }
 }

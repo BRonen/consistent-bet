@@ -1,7 +1,7 @@
 import { Inject } from '@nestjs/common';
-import { InferModel, eq } from 'drizzle-orm';
+import { InferModel, eq, sql } from 'drizzle-orm';
 import { ledgerSchema } from '../schemas';
-import { DB, DbType } from '../database/database.provider';
+import { DB, DbTransaction, DbType } from '../database/database.provider';
 
 export class LedgerRepository {
   constructor(@Inject(DB) private readonly database: DbType) {}
@@ -39,5 +39,19 @@ export class LedgerRepository {
     console.log(ledger);
 
     return ledger;
+  }
+
+  withdraw(tx: DbTransaction, ledgerId: number, amount: number){
+    return tx
+      .update(ledgerSchema)
+      .set({ balance: sql`${ledgerSchema.balance} - ${amount}` })
+      .where(eq(ledgerSchema.id, ledgerId));
+  }
+
+  deposit(tx: DbTransaction, ledgerId: number, amount: number) {
+    return tx
+    .update(ledgerSchema)
+    .set({ balance: sql`${ledgerSchema.balance} + ${amount}` })
+    .where(eq(ledgerSchema.id, ledgerId));
   }
 }

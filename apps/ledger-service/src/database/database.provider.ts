@@ -1,12 +1,14 @@
 import { FactoryProvider, Logger } from '@nestjs/common';
-import { PostgresJsDatabase, drizzle } from 'drizzle-orm/postgres-js';
-import { DefaultLogger, LogWriter } from 'drizzle-orm';
+import { PostgresJsDatabase, PostgresJsQueryResultHKT, drizzle } from 'drizzle-orm/postgres-js';
+import { DefaultLogger, ExtractTablesWithRelations, LogWriter } from 'drizzle-orm';
 import postgres from 'postgres';
 
 import { LedgerEnviroment } from '../ledger-environment';
+import { PgTransaction } from 'drizzle-orm/pg-core';
 
 export const DB = Symbol('DATABASE_SERVICE');
 export type DbType = PostgresJsDatabase<Record<string, never>>;
+export type DbTransaction = PgTransaction<PostgresJsQueryResultHKT, Record<string, never>, ExtractTablesWithRelations<Record<string, never>>>
 
 export const DatabaseProvider: FactoryProvider = {
   provide: DB,
