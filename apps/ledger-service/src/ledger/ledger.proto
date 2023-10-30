@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package ledger;
+
+service LedgerService {
+  rpc FindOne (LedgerByUserId) returns (Ledger);
+  rpc FindMany (stream LedgerByUserId) returns (stream Ledger);
+}
+
+message LedgerByUserId {
+  int32 id = 1;
+}
+
+message Ledger {
+  int32 id = 1;
+  int32 balance = 2;
+}

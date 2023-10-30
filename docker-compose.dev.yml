@@ -1,0 +1,74 @@
+services:
+  auth-service:
+    build: 
+      dockerfile: ./docker/Dockerfile.auth-service
+    entrypoint: pnpm run start:auth-service:debug
+    volumes:
+      - "${PWD}:/app"
+    environment:
+      - PORT=3000
+      - AUTH_DATABASE_URI=postgres://postgres:password@auth-database:5432/auth_database
+      - LEDGER_SERVICE_URI=ledger-service:9090
+      - JWT_SECRET=jwt_consistent_bets
+    ports:
+      - 3000:3000
+    networks:
+      - mq-network
+      - services-network
+      - auth-network
+
+  auth-database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: auth_database
+    ports:
+      - 5432:5432
+    networks:
+      - auth-network
+
+  ledger-service:
+    build: 
+      dockerfile: ./docker/Dockerfile.ledger-service
+    entrypoint: pnpm run start:ledger-service:debug
+    restart: always
+    volumes:
+      - "${PWD}:/app"
+    environment:
+      - PORT=3001
+      - LEDGER_DATABASE_URI=postgres://postgres:password@ledger-database:5432/ledger_database
+      - JWT_SECRET=jwt_consistent_bets
+    ports:
+      - 3001:3001
+      - 9090:9090
+    networks:
+      - mq-network
+      - services-network
+      - ledger-network
+
+  ledger-database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ledger_database
+    ports:
+      - 5433:5432
+    networks:
+      - ledger-network
+
+  events-mq:
+    image: rabbitmq:3-management-alpine
+    ports:
+        - 5672:5672
+        - 15672:15672
+    networks:
+      - mq-network
+
+networks:
+  services-network:
+
+  auth-network:
+
+  ledger-network:
+
+  mq-network:

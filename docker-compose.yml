@@ -1,11 +1,25 @@
+# TODO: this file is out of date, see the ./docker-compose.dev.yml
 services:
-  database:
+  auth-service:
+    build: 
+      dockerfile: ./docker/Dockerfile.auth-service
+    restart: always
+    environment:
+      - PORT=3000
+      - AUTH_DATABASE_URI=postgres://postgres:password@auth-database:5432/auth_database
+      - JWT_SECRET=jwt_consistent_bets
+    networks:
+      - auth-network
+    depends_on:
+      - auth-database
+  auth-database:
     image: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: consistent_bets
-    ports:
-      - '5432:5432'
-    expose:
-      - '5432'
+      POSTGRES_DB: auth_database
+    networks:
+      - auth-network
+
+networks:
+  auth-network:

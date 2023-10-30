@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1693617043498,
+      "tag": "0000_sturdy_daimon_hellstrom",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1693944178758,
+      "tag": "0001_clear_sharon_carter",
+      "breakpoints": true
+    }
+  ]
+}
