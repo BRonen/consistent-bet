@@ -52,6 +52,10 @@ export class UsersService {
     );
   }
 
+  findOne(userId: number) {
+    return this.repositories.user.findById(userId);
+  }
+
   @Cron(CronExpression.EVERY_10_SECONDS)
   async outboxProcessing() {
     const events = await this.repositories.outboxEvents.findNotProcessed();

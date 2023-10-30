@@ -1,3 +1,4 @@
+# TODO: this file is out of date, see the ./docker-compose.dev.yml
 services:
   auth-service:
     build: 

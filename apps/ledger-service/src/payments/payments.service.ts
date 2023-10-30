@@ -16,10 +16,19 @@ export class PaymentsService {
     return this.repositories.payment.findAll();
   }
 
-  @Cron(CronExpression.EVERY_10_SECONDS)
+  @Cron(CronExpression.EVERY_SECOND)
   async processNewPayments() {
     await this.database.transaction(async (tx) => {
       const payment = await this.repositories.payment.getNotProcessedPayment(tx);
+
+      if(!payment) return;
+
+      const senderLedger = await this.repositories.ledger.findById(payment.senderId, tx)
+
+      if(senderLedger.balance - payment.amount < 0) {
+        await this.repositories.payment.setPaymentAsError(tx, payment.id)
+        return;
+      }
 
       await Promise.all([
         this.repositories.ledger.withdraw(tx, payment.senderId, payment.amount),

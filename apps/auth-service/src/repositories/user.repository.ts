@@ -4,7 +4,7 @@ import { UserType, outboxEventSchema, userSchema } from '../schemas';
 import { DB, DbType } from '../database/database.provider';
 
 export class UserRepository {
-  constructor(@Inject(DB) private readonly database: DbType) {}
+  constructor(@Inject(DB) private readonly database: DbType) { }
 
   async getUserHashByEmail(email) {
     const [user] = await this.database
@@ -20,8 +20,8 @@ export class UserRepository {
     return user;
   }
 
-  async create(createUserDto: InferModel<typeof userSchema, 'insert'>) {
-    return await this.database.transaction(async (tx) => {
+  create(createUserDto: InferModel<typeof userSchema, 'insert'>) {
+    return this.database.transaction(async (tx) => {
       const [user] = await tx
         .insert(userSchema)
         .values(createUserDto)

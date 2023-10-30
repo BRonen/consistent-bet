@@ -39,7 +39,6 @@ export class LedgerController {
     @Payload() payload: any,
     @Ctx() context: RmqContext,
   ) {
-    console.log('eawadawdwdawdawdaawdwd\n\n\n\n');
     const channel = context.getChannelRef();
     const originalMsg = context.getMessage();
 

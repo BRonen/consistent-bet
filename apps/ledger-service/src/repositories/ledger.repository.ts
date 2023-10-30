@@ -26,8 +26,9 @@ export class LedgerRepository {
     return payments;
   }
 
-  async findById(id: number) {
-    const [ledger] = await this.database
+  async findById(id: number, tx?: DbTransaction) {
+    const db = tx || this.database;
+    const [ledger] = await db
       .select({
         id: ledgerSchema.id,
         balance: ledgerSchema.balance,

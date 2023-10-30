@@ -8,6 +8,13 @@
       "when": 1693626592552,
       "tag": "0000_quick_forge",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1698627913179,
+      "tag": "0001_aspiring_switch",
+      "breakpoints": true
     }
   ]
 }

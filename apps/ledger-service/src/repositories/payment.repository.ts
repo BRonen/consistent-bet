@@ -38,6 +38,13 @@ export class PaymentRepository {
 
     return payment;
   }
+  
+  setPaymentAsError(tx: DbTransaction, paymentId: number) {
+    return tx
+      .update(paymentSchema)
+      .set({ status: 'error' })
+      .where(eq(paymentSchema.id, paymentId));
+  }
 
   setPaymentAsProcessed(tx: DbTransaction, paymentId: number){
     return tx
