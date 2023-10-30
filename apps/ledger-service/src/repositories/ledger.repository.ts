@@ -26,7 +26,7 @@ export class LedgerRepository {
     return payments;
   }
 
-  async findById(id: number, tx?: DbTransaction) {
+  async findById(id: number, tx?: DbTransaction, lock?: boolean) {
     const db = tx || this.database;
     const [ledger] = await db
       .select({
@@ -34,7 +34,7 @@ export class LedgerRepository {
         balance: ledgerSchema.balance,
       })
       .from(ledgerSchema)
-      .where(eq(ledgerSchema.id, id))
+      .where(lock? sql`${ledgerSchema.id} = ${id} FOR UPDATE` : eq(ledgerSchema.id, id))
       .limit(1);
 
     console.log(ledger);

@@ -34,7 +34,7 @@ export class PaymentRepository {
       .select()
       .from(paymentSchema)
       .limit(1)
-      .where(sql`${paymentSchema.status} = 'not_processed' FOR SHARE`);
+      .where(sql`${paymentSchema.status} = 'not_processed' FOR UPDATE`);
 
     return payment;
   }

@@ -23,7 +23,7 @@ export class PaymentsService {
 
       if(!payment) return;
 
-      const senderLedger = await this.repositories.ledger.findById(payment.senderId, tx)
+      const senderLedger = await this.repositories.ledger.findById(payment.senderId, tx, true)
 
       if(senderLedger.balance - payment.amount < 0) {
         await this.repositories.payment.setPaymentAsError(tx, payment.id)
